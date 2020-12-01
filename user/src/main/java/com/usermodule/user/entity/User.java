@@ -1,17 +1,18 @@
 package com.usermodule.user.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@Table(name = "users")
 public class User {
 
 
     @Id
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -30,6 +31,13 @@ public class User {
     private LocalDate lastLoggedIn;
     private boolean isEmailVerified;
 
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
 
     public User(String firstname, String lastname, String address, String email, String password) {
         this.firstname = firstname;
@@ -42,6 +50,13 @@ public class User {
 
     protected User() {
     }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+
+
 
     public Long getId() {
         return id;
