@@ -5,8 +5,12 @@ import com.usermodule.user.entity.User;
 import com.usermodule.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 @RestController
@@ -45,6 +49,22 @@ public class UserController {
     @GetMapping("/403")
     public String error403(){
         return "403";
+    }
+
+    @GetMapping(value = "/anyPage", produces = MediaType.TEXT_HTML_VALUE)
+    @ResponseBody
+    public String returnSingleHTTPpage(){
+
+        String path = "user/src/main/resources/templates/anyPage.html";
+        String content = "dummyText";
+        try {
+            content = Files.readString(Paths.get(path));
+            System.out.println(content);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return content;
+
     }
 
 }
