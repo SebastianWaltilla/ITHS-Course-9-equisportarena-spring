@@ -23,7 +23,17 @@ public class Entry {
     private LocalDate submissionDate;
     private String horseName;
 
-    public Entry() {
+    public Entry(Long id, @NotEmpty Long user_id, @NotEmpty Long contest_id, String videolink, String userComment, boolean hasPaid, Integer score, String adminComment, LocalDate submissionDate, String horseName) {
+        this.id = id;
+        this.user_id = user_id;
+        this.contest_id = contest_id;
+        this.videolink = videolink;
+        this.userComment = userComment;
+        this.hasPaid = hasPaid;
+        this.score = score;
+        this.adminComment = adminComment;
+        this.submissionDate = submissionDate;
+        this.horseName = horseName;
     }
 
     public Long getUser_id() {
