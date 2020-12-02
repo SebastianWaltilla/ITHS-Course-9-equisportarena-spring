@@ -31,7 +31,7 @@ public class ContestApplication {
                     new BigDecimal(10.00),"en kram",
                     "enkel","adminkommentar");
 
-            Contest contest2 = new Contest("firstcontest",
+            Contest contest2 = new Contest("secondcontest",
                     "demotävling2",
                     10,
                     LocalDate.of(2020, 10,1),
@@ -39,8 +39,19 @@ public class ContestApplication {
                     new BigDecimal(10.00),"en kram",
                     "enkel","adminkommentar");
 
+            Contest contest3 = new Contest("thirdcontest",
+                    "demotävling3",
+                    10,
+                    LocalDate.of(2020, 12,25),
+                    LocalDate.of(2020,12,26),
+                    new BigDecimal(10.00),"en kram",
+                    "enkel","adminkommentar");
+
+
+
             service.createContest(contest1);
             service.createContest(contest2);
+            service.createContest(contest3);
 
         };
     }

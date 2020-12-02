@@ -10,7 +10,5 @@ import java.util.List;
 @Repository
 public interface ContestRepository extends CrudRepository <Contest, Long> {
 
-
-
-    List<Contest> findAllByStartDateBeforeAndEndDateAfter(LocalDate todaysDate, LocalDate todaysDate2);
+    List<Contest> findAllByStartDateLessThanEqualAndEndDateGreaterThanEqual(LocalDate today, LocalDate copy);
 }
