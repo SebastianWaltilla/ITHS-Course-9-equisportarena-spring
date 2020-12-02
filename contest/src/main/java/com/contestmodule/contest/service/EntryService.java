@@ -14,7 +14,6 @@ public class EntryService {
     }
 
     public Entry createEntry(Entry entry){
-        entry.getContest().addEntry(entry);
         return entryRepository.save(entry);
     }
 
