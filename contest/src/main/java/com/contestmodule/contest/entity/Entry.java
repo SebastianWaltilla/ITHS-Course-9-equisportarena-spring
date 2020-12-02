@@ -1,5 +1,7 @@
 package com.contestmodule.contest.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
@@ -51,7 +53,7 @@ public class Entry {
         return this.id;
     }
 
-
+    @JsonIgnore
     public Contest getContest() {
         return contest;
     }
