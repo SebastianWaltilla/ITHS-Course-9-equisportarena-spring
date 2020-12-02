@@ -32,8 +32,10 @@ public class Contest {
     private String winningAward;
     private String adminComment;
 
+    public Contest() {
+    }
 
-    public Contest(String name,String description, int maxParticipants, LocalDate startDate, LocalDate endDate, BigDecimal entryFee, String winningAward, String contestLevel, String adminComment){
+    public Contest(String name, String description, int maxParticipants, LocalDate startDate, LocalDate endDate, BigDecimal entryFee, String winningAward, String contestLevel, String adminComment){
         this.name         = name;
         this.description  = description;
         this.maxParticipants = maxParticipants;

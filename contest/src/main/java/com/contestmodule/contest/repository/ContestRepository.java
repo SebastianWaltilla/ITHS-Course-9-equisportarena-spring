@@ -12,5 +12,5 @@ public interface ContestRepository extends CrudRepository <Contest, Long> {
 
 
 
-    List<Contest> findAllByStartDateBeforeAndEndDateAfter(LocalDate todaysDate);
+    List<Contest> findAllByStartDateBeforeAndEndDateAfter(LocalDate todaysDate, LocalDate todaysDate2);
 }
