@@ -13,8 +13,11 @@ public class Entry {
 
     @NotEmpty
     private Long user_id;
+
     @NotEmpty
-    private Long contest_id;
+    @ManyToOne(fetch=FetchType.LAZY)
+    private Contest contest;
+
     private String videolink;
     private String userComment;
     private boolean hasPaid;
@@ -23,33 +26,33 @@ public class Entry {
     private LocalDate submissionDate;
     private String horseName;
 
-    public Entry(Long id, @NotEmpty Long user_id, @NotEmpty Long contest_id, String videolink, String userComment, boolean hasPaid, Integer score, String adminComment, LocalDate submissionDate, String horseName) {
-        this.id = id;
+    public Entry(@NotEmpty Long user_id, @NotEmpty Contest contest, String userComment, boolean hasPaid,  LocalDate submissionDate, String horseName) {
         this.user_id = user_id;
-        this.contest_id = contest_id;
-        this.videolink = videolink;
+        this.contest = contest;
         this.userComment = userComment;
         this.hasPaid = hasPaid;
-        this.score = score;
-        this.adminComment = adminComment;
         this.submissionDate = submissionDate;
         this.horseName = horseName;
+    }
+
+    public Entry(){
+
     }
 
     public Long getUser_id() {
         return user_id;
     }
 
+    public Long getId(){
+        return this.id;
+    }
+
+    public Contest getContest() {
+        return contest;
+    }
+
     public void setUser_id(Long user_id) {
         this.user_id = user_id;
-    }
-
-    public Long getContest_id() {
-        return contest_id;
-    }
-
-    public void setContest_id(Long contest_id) {
-        this.contest_id = contest_id;
     }
 
     public String getVideolink() {
@@ -107,5 +110,21 @@ public class Entry {
 
     public void setHorseName(String horseName) {
         this.horseName = horseName;
+    }
+
+    public void setContest(Contest contest) {
+        this.contest = contest;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Entry)) return false;
+        return id != null && id.equals(((Entry) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

@@ -4,6 +4,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "contests")
@@ -32,19 +34,35 @@ public class Contest {
     private String winningAward;
     private String adminComment;
 
+    @OneToMany(
+            mappedBy = "contest",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    Set<Entry> entries = new HashSet<>();
+
     public Contest() {
     }
 
-    public Contest(String name, String description, int maxParticipants, LocalDate startDate, LocalDate endDate, BigDecimal entryFee, String winningAward, String contestLevel, String adminComment){
-        this.name         = name;
-        this.description  = description;
+    public Contest(String name, String description, int maxParticipants, LocalDate startDate, LocalDate endDate, BigDecimal entryFee, String winningAward, String contestLevel, String adminComment) {
+        this.name = name;
+        this.description = description;
         this.maxParticipants = maxParticipants;
-        this.startDate    = startDate;
-        this.endDate      = endDate;
-        this.entryFee     = entryFee;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.entryFee = entryFee;
         this.winningAward = winningAward;
         this.contestLevel = contestLevel;
         this.adminComment = adminComment;
+    }
+
+    public void addEntry(Entry entry){
+        entries.add(entry);
+        entry.setContest(this);
+    }
+
+    public void removeEntry(Entry entry){
+        entries.remove(entry);
+        entry.setContest(null);
     }
 
     public Long getId() {
