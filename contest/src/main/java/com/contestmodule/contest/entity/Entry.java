@@ -26,17 +26,21 @@ public class Entry {
     private LocalDate submissionDate;
     private String horseName;
 
-    public Entry(@NotEmpty Long user_id, @NotEmpty Contest contest, String userComment, boolean hasPaid,  LocalDate submissionDate, String horseName) {
+    public Entry(@NotEmpty Long user_id, @NotEmpty Contest contest, String userComment, boolean hasPaid, String horseName) {
         this.user_id = user_id;
         this.contest = contest;
         this.userComment = userComment;
         this.hasPaid = hasPaid;
-        this.submissionDate = submissionDate;
         this.horseName = horseName;
     }
 
     public Entry(){
 
+    }
+
+    @PrePersist
+    private void getCurrentDate() {
+        setSubmissionDate(LocalDate.now());
     }
 
     public Long getUser_id() {
@@ -46,6 +50,7 @@ public class Entry {
     public Long getId(){
         return this.id;
     }
+
 
     public Contest getContest() {
         return contest;

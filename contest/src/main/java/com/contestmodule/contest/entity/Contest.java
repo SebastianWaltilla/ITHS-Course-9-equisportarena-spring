@@ -128,4 +128,8 @@ public class Contest {
     public void setWinningAward(String winningAward) {
         this.winningAward = winningAward;
     }
+
+    public Set<Entry> getEntries() {
+        return entries;
+    }
 }
