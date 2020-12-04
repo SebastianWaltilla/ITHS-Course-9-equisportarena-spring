@@ -20,12 +20,6 @@ public class ContestController {
         this.contestService = contestService;
     }
 
-    @PostMapping("/create")
-    public Contest createContest(@RequestBody Contest contest) {
-        logger.info("createContest() was called with contestname: " + contest.getName());
-        return contestService.createContest(contest);
-     }
-
 @GetMapping("/findall")
     public Iterable<Contest> findAllContests(){
         return contestService.findAllContests();

@@ -55,20 +55,9 @@ public class Contest {
         this.adminComment = adminComment;
     }
 
-    public void addEntry(Entry entry){
-        entries.add(entry);
-        entry.setContest(this);
-    }
-
-    public void removeEntry(Entry entry){
-        entries.remove(entry);
-        entry.setContest(null);
-    }
-
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -76,7 +65,6 @@ public class Contest {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -84,7 +72,6 @@ public class Contest {
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
@@ -92,7 +79,6 @@ public class Contest {
     public int getMaxParticipants() {
         return maxParticipants;
     }
-
     public void setMaxParticipants(int maxParticipants) {
         this.maxParticipants = maxParticipants;
     }
@@ -100,7 +86,6 @@ public class Contest {
     public LocalDate getStartDate() {
         return startDate;
     }
-
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
@@ -108,7 +93,6 @@ public class Contest {
     public LocalDate getEndDate() {
         return endDate;
     }
-
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
@@ -116,20 +100,40 @@ public class Contest {
     public BigDecimal getEntryFee() {
         return entryFee;
     }
-
     public void setEntryFee(BigDecimal entryFee) {
         this.entryFee = entryFee;
+    }
+
+    public Set<Entry> getEntries() {
+        return entries;
+    }
+    public void addEntry(Entry entry){
+        entries.add(entry);
+        entry.setContest(this);
+    }
+    public void removeEntry(Entry entry){
+        entries.remove(entry);
+        entry.setContest(null);
     }
 
     public String getWinningAward() {
         return winningAward;
     }
-
     public void setWinningAward(String winningAward) {
         this.winningAward = winningAward;
     }
 
-    public Set<Entry> getEntries() {
-        return entries;
+    public String getContestLevel() {
+        return contestLevel;
+    }
+    public void setContestLevel(String contestLevel) {
+        this.contestLevel = contestLevel;
+    }
+
+    public String getAdminComment() {
+        return adminComment;
+    }
+    public void setAdminComment(String adminComment) {
+        this.adminComment = adminComment;
     }
 }
