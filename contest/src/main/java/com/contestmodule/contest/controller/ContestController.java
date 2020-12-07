@@ -1,6 +1,7 @@
 package com.contestmodule.contest.controller;
 
 import com.contestmodule.contest.entity.Contest;
+import com.contestmodule.contest.entity.SimpleContestDao;
 import com.contestmodule.contest.service.ContestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,7 @@ public class ContestController {
     }
 
 @GetMapping("/active")
-    public Iterable<Contest> findAllActiveContests(){
+    public Iterable<SimpleContestDao> findAllActiveContests(){
         return contestService.findAllContestsForUser();
 }
 
