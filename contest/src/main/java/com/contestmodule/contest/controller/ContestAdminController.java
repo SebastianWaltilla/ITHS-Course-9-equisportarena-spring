@@ -23,7 +23,7 @@ public class ContestAdminController {
         this.contestService = contestService;
     }
 
-    @GetMapping("/findall")
+    @GetMapping("/find-all")
     public Iterable<Contest> findAllContests(){
         return contestService.findAllContests();
     }
@@ -34,7 +34,7 @@ public class ContestAdminController {
         return contestService.createContest(contest);
     }
 
-    @PatchMapping("/updatecontest/{id}")
+    @PatchMapping("/update-contest/{id}")
     public ResponseEntity<Contest> updateContest(@Valid @PathVariable("id") Long id,
                                              @RequestBody Contest updateContest) {
         Optional<Contest> contestOptional = contestService.findContestByID(id);

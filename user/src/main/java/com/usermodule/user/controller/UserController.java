@@ -31,7 +31,7 @@ public class UserController {
         return userService.createUser(user);
     }
 
-    @GetMapping("/findall")
+    @GetMapping("/find-all")
     public Iterable<User> findAllUsers() {
         return userService.findAllUsers();
     }
@@ -51,7 +51,7 @@ public class UserController {
         return "403";
     }
 
-    @GetMapping(value = "/anyPage", produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping(value = "/any-page", produces = MediaType.TEXT_HTML_VALUE)
     @ResponseBody
     public String returnSingleHTTPpage(){
 
@@ -64,7 +64,5 @@ public class UserController {
             e.printStackTrace();
         }
         return content;
-
     }
-
 }

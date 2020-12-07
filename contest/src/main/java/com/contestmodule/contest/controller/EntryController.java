@@ -28,12 +28,12 @@ public class EntryController {
         return entryService.createEntry(entry);
     }
 
-    @GetMapping("/findall")
+    @GetMapping("/find-all")
     public Iterable<Entry> findAllEntries() {
         return entryService.findAllEntries();
     }
 
-    @PatchMapping("/updateEntry/{id}")
+    @PatchMapping("/update-entry/{id}")
     public ResponseEntity<Entry> updateEntry(@PathVariable("id") Long id, @RequestBody Entry updatedEntry) {
         Optional<Entry> entryOptional = entryService.findEntryById(id);
         if (!entryOptional.isPresent()) {
