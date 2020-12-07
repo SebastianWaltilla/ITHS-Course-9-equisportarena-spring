@@ -27,7 +27,7 @@ public class ContestController {
 
 @GetMapping("/active")
     public Iterable<Contest> findAllActiveContests(){
-        return contestService.findAllActiveContests();
+        return contestService.findAllContestsForUser();
 }
 
 }

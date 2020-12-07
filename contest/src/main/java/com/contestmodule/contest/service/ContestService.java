@@ -21,7 +21,9 @@ public class ContestService {
 
     public Iterable<Contest> findAllContests(){ return contestRepository.findAll();}
 
-    public Iterable<Contest> findAllActiveContests(){return contestRepository.findAllByStartDateLessThanEqualAndEndDateGreaterThanEqual(LocalDate.now(), LocalDate.now());}
+    public Iterable<Contest> findAllContestsForUser(){
+        return contestRepository.findAllByStartDateLessThanEqualAndEndDateGreaterThanEqual(LocalDate.now(), LocalDate.now());
+    }
 
     public Optional<Contest> findContestByID(Long id) { return contestRepository.findById(id);
     }
