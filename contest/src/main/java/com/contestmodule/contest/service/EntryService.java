@@ -26,4 +26,8 @@ public class EntryService {
     public Optional<Entry> findEntryById(Long id) {
         return entryRepository.findById(id);
     }
+
+    public void deleteEntry(Long id) {
+        entryRepository.deleteById(id);
+    }
 }

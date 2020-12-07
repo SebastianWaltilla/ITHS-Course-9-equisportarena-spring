@@ -11,29 +11,26 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/entry")
-public class EntryController {
+@RequestMapping("/admin/entry")
+public class EntryAdminController {
+
+    public EntryAdminController(EntryService entryService) {
+        this.entryService = entryService;
+    }
 
     Logger logger = LoggerFactory.getLogger(EntryService.class);
 
     private EntryService entryService;
 
-    public EntryController(EntryService entryService) {
-        this.entryService = entryService;
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity deleteEntry(@PathVariable Long id) {
+        if (entryService.findEntryById(id).isPresent()) {
+            entryService.deleteEntry(id);
+            return new ResponseEntity(id + " was deleted", HttpStatus.OK);
+        } return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/create")
-    public Entry createEntry(@RequestBody Entry entry) {
-        logger.info("Entry created with id" + entry.getId());
-        return entryService.createEntry(entry);
-    }
-
-    @GetMapping("/findall")
-    public Iterable<Entry> findAllEntries() {
-        return entryService.findAllEntries();
-    }
-
-    @PatchMapping("/updateEntry/{id}")
+    @PatchMapping("/update-entry/{id}")
     public ResponseEntity<Entry> updateEntry(@PathVariable("id") Long id, @RequestBody Entry updatedEntry) {
         Optional<Entry> entryOptional = entryService.findEntryById(id);
         if (!entryOptional.isPresent()) {
@@ -43,6 +40,9 @@ public class EntryController {
         if (updatedEntry.getVideolink() != null) {
             entry.setVideolink(updatedEntry.getVideolink());
         }
+
+        entry.setHasPaid(updatedEntry.isHasPaid());
+
         if (updatedEntry.getHorseName() != null) {
             entry.setHorseName(updatedEntry.getHorseName());
         }
@@ -53,5 +53,4 @@ public class EntryController {
 
         return ResponseEntity.noContent().build();
     }
-
 }

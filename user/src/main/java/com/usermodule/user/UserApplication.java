@@ -2,16 +2,11 @@ package com.usermodule.user;
 
 import com.usermodule.user.entity.Role;
 import com.usermodule.user.entity.User;
-import com.usermodule.user.repository.UserRepository;
 import com.usermodule.user.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-
-import java.util.HashSet;
-import java.util.Set;
-
 
 @SpringBootApplication
 public class UserApplication {
@@ -24,7 +19,7 @@ public class UserApplication {
     public CommandLineRunner demoData(UserService service) {
         return args -> {
             Role role = new Role("ADMIN");
-            User user1 = new User("Anders", "Andersson", "hejvägen 2", "admin", "admin");
+            User user1 = new User("Admin", "Adminsson", "administrationsvägen 1", "admin", "admin");
 
             user1.getRoles().add(role);
 

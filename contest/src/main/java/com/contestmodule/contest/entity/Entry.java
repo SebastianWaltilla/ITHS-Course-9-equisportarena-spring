@@ -14,7 +14,7 @@ public class Entry {
     private Long id;
 
     @NotEmpty
-    private Long user_id;
+    private Long userId;
 
     @NotEmpty
     @ManyToOne(fetch=FetchType.LAZY)
@@ -28,8 +28,8 @@ public class Entry {
     private LocalDate submissionDate;
     private String horseName;
 
-    public Entry(@NotEmpty Long user_id, @NotEmpty Contest contest, String userComment, boolean hasPaid, String horseName) {
-        this.user_id = user_id;
+    public Entry(@NotEmpty Long userId, @NotEmpty Contest contest, String userComment, boolean hasPaid, String horseName) {
+        this.userId = userId;
         this.contest = contest;
         this.userComment = userComment;
         this.hasPaid = hasPaid;
@@ -45,8 +45,8 @@ public class Entry {
         setSubmissionDate(LocalDate.now());
     }
 
-    public Long getUser_id() {
-        return user_id;
+    public Long getUserId() {
+        return userId;
     }
 
     public Long getId(){
@@ -58,8 +58,8 @@ public class Entry {
         return contest;
     }
 
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
+    public void setUserId(Long user_id) {
+        this.userId = user_id;
     }
 
     public String getVideolink() {

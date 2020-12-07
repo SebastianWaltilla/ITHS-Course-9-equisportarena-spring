@@ -12,7 +12,7 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/contest/admin")
+@RequestMapping("/admin/contest")
 public class ContestAdminController {
 
     Logger logger = LoggerFactory.getLogger(ContestService.class);
@@ -21,6 +21,11 @@ public class ContestAdminController {
 
     public ContestAdminController(ContestService contestService) {
         this.contestService = contestService;
+    }
+
+    @GetMapping("/findall")
+    public Iterable<Contest> findAllContests(){
+        return contestService.findAllContests();
     }
 
     @PostMapping("/create")

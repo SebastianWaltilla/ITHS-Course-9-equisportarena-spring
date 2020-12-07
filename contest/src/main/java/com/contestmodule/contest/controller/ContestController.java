@@ -20,11 +20,6 @@ public class ContestController {
         this.contestService = contestService;
     }
 
-@GetMapping("/findall")
-    public Iterable<Contest> findAllContests(){
-        return contestService.findAllContests();
-}
-
 @GetMapping("/id/{id}")
     public Optional<Contest> findContestByID(@PathVariable Long id) {
         return contestService.findContestByID(id);
@@ -34,17 +29,5 @@ public class ContestController {
     public Iterable<Contest> findAllActiveContests(){
         return contestService.findAllActiveContests();
 }
-
-@DeleteMapping("/delete/{id}")
-    public void deleteContest(@PathVariable Long id ){
-        contestService.deleteContest(id);
-}
-
-@GetMapping("/403")
-    public String error403(){
-        return "403";
-}
-
-
 
 }
