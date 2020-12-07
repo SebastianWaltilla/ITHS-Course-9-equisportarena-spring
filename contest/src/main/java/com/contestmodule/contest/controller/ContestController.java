@@ -22,7 +22,7 @@ public class ContestController {
 
 @GetMapping("/id/{id}")
     public Optional<Contest> findContestByID(@PathVariable Long id) {
-        return contestService.findContestByID(id);
+        return contestService.findContestByID(id); // Vid ett senare tillfälle lägg till en extra check så man inte kan få ut tävlingar som inte är aktiva.
     }
 
 @GetMapping("/active")

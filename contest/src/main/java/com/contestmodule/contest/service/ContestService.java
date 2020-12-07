@@ -22,9 +22,10 @@ public class ContestService {
     public Iterable<Contest> findAllContests(){ return contestRepository.findAll();}
 
     public Iterable<Contest> findAllContestsForUser(){
-        return contestRepository.findAllByStartDateLessThanEqualAndEndDateGreaterThanEqual(LocalDate.now(), LocalDate.now());
+        return contestRepository.findAllForUserBetweenDates(LocalDate.now(), LocalDate.now());
     }
 
+    // Vid ett senare tillfälle lägg till en extra check så man inte kan få ut tävlingar som inte är aktiva.
     public Optional<Contest> findContestByID(Long id) { return contestRepository.findById(id);
     }
 
