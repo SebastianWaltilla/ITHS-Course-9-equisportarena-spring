@@ -1,11 +1,9 @@
 package com.contestmodule.contest.controller;
 
 import com.contestmodule.contest.entity.Contest;
-import com.contestmodule.contest.repository.ContestRepository;
 import com.contestmodule.contest.service.ContestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,13 +29,8 @@ public class ContestAdminController {
         return contestService.createContest(contest);
     }
 
-//    @PatchMapping("/updatecontest/{id}")
-//    public Contest updateContest(@RequestParam("id") Long id) {
-//
-//    }
-
     @PatchMapping("/updatecontest/{id}")
-    public ResponseEntity<Void> updateContest(@Valid @PathVariable("id") long id,
+    public ResponseEntity<Contest> updateContest(@Valid @PathVariable("id") Long id,
                                              @RequestBody Contest updateContest) {
         Optional<Contest> contestOptional = contestService.findContestByID(id);
         if (!contestOptional.isPresent()) {
@@ -76,4 +69,13 @@ public class ContestAdminController {
 
         return ResponseEntity.noContent().build();
     }
-}
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity deleteContest(@PathVariable Long id) {
+        if (contestService.findContestByID(id).isPresent()) {
+            contestService.deleteContest(id);
+            return new ResponseEntity(id + " was deleted", HttpStatus.OK);
+        } return ResponseEntity.notFound().build();
+    }
+    }
+
