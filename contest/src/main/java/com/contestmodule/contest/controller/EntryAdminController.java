@@ -23,6 +23,12 @@ public class EntryAdminController {
 
     private EntryService entryService;
 
+
+    @GetMapping("/find-all-by-contest-id/{id}")
+    public Iterable<Entry> findAllByContestId(@PathVariable Long id) {
+        return entryService.findAllEntriesByContestId(id);
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity deleteEntry(@PathVariable Long id) {
         if (entryService.findEntryById(id).isPresent()) {

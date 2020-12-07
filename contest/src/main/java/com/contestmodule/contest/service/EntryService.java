@@ -23,6 +23,10 @@ public class EntryService {
         return entryRepository.findAll();
     }
 
+    public Iterable<Entry> findAllEntriesByContestId(Long id) {
+        return entryRepository.findAllByContestId(id);
+    }
+
     public Optional<Entry> findEntryById(Long id) {
         return entryRepository.findById(id);
     }
