@@ -45,27 +45,28 @@ public class Entry {
         setSubmissionDate(LocalDate.now());
     }
 
+    public Long getId(){
+        return this.id;
+    }
+
     public Long getUserId() {
         return userId;
     }
-
-    public Long getId(){
-        return this.id;
+    public void setUserId(Long user_id) {
+        this.userId = user_id;
     }
 
     @JsonIgnore
     public Contest getContest() {
         return contest;
     }
-
-    public void setUserId(Long user_id) {
-        this.userId = user_id;
+    public void setContest(Contest contest) {
+        this.contest = contest;
     }
 
     public String getVideolink() {
         return videolink;
     }
-
     public void setVideolink(String videolink) {
         this.videolink = videolink;
     }
@@ -73,16 +74,13 @@ public class Entry {
     public String getUserComment() {
         return userComment;
     }
-
     public void setUserComment(String userComment) {
         this.userComment = userComment;
     }
 
-
-    public boolean isHasPaid() {
+    public boolean hasUserPaid() {
         return hasPaid;
     }
-
     public void setHasPaid(boolean hasPaid) {
         this.hasPaid = hasPaid;
     }
@@ -90,7 +88,6 @@ public class Entry {
     public Integer getScore() {
         return score;
     }
-
     public void setScore(Integer score) {
         this.score = score;
     }
@@ -98,7 +95,6 @@ public class Entry {
     public String getAdminComment() {
         return adminComment;
     }
-
     public void setAdminComment(String adminComment) {
         this.adminComment = adminComment;
     }
@@ -106,7 +102,6 @@ public class Entry {
     public LocalDate getSubmissionDate() {
         return submissionDate;
     }
-
     public void setSubmissionDate(LocalDate submissionDate) {
         this.submissionDate = submissionDate;
     }
@@ -114,14 +109,11 @@ public class Entry {
     public String getHorseName() {
         return horseName;
     }
-
     public void setHorseName(String horseName) {
         this.horseName = horseName;
     }
 
-    public void setContest(Contest contest) {
-        this.contest = contest;
-    }
+
 
     @Override
     public boolean equals(Object o) {

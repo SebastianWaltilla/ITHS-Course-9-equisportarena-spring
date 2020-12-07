@@ -35,8 +35,8 @@ public class ContestAdminController {
     }
 
     @PatchMapping("/update-contest/{id}")
-    public ResponseEntity<Contest> updateContest(@Valid @PathVariable("id") Long id,
-                                             @RequestBody Contest updateContest) {
+    public ResponseEntity<Contest> updateContest(@Valid @PathVariable("id") Long id, @RequestBody Contest updateContest) {
+
         Optional<Contest> contestOptional = contestService.findContestByID(id);
         if (!contestOptional.isPresent()) {
             return ResponseEntity.notFound().build();
@@ -71,7 +71,8 @@ public class ContestAdminController {
         }
 
         contestService.createContest(contest);
-
+        logger.info("createContest() was called through update-contest with contestId: " + contest.getId());
+        logger.info("Contest" + contest.getName() + "was updated");
         return ResponseEntity.noContent().build();
     }
 

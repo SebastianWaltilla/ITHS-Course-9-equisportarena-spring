@@ -32,24 +32,30 @@ public class EntryAdminController {
 
     @PatchMapping("/update-entry/{id}")
     public ResponseEntity<Entry> updateEntry(@PathVariable("id") Long id, @RequestBody Entry updatedEntry) {
+
         Optional<Entry> entryOptional = entryService.findEntryById(id);
+
         if (!entryOptional.isPresent()) {
             return ResponseEntity.notFound().build();
         }
         Entry entry = entryOptional.get();
+
+        entry.setContest(updatedEntry.getContest()); //change entry, should it be here or in contestcontroller?
+        entry.setHasPaid(updatedEntry.hasUserPaid());
+
         if (updatedEntry.getVideolink() != null) {
             entry.setVideolink(updatedEntry.getVideolink());
         }
-
-        entry.setHasPaid(updatedEntry.isHasPaid());
-
         if (updatedEntry.getHorseName() != null) {
             entry.setHorseName(updatedEntry.getHorseName());
         }
         if (updatedEntry.getUserComment() != null) {
             entry.setUserComment(updatedEntry.getUserComment());
         }
+
         entryService.createEntry(entry);
+        logger.info("createEntry() was called through update-entry with entryId: " + entry.getId());
+        logger.info("Entry" + entry.getUserId() + "was updated");
 
         return ResponseEntity.noContent().build();
     }
