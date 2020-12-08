@@ -1,6 +1,7 @@
 package com.contestmodule.contest.service;
 
 import com.contestmodule.contest.entity.Contest;
+import com.contestmodule.contest.entity.SimpleContestDao;
 import com.contestmodule.contest.repository.ContestRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +22,11 @@ public class ContestService {
 
     public Iterable<Contest> findAllContests(){ return contestRepository.findAll();}
 
-    public Iterable<Contest> findAllActiveContests(){return contestRepository.findAllByStartDateLessThanEqualAndEndDateGreaterThanEqual(LocalDate.now(), LocalDate.now());}
+    public Iterable<SimpleContestDao> findAllContestsForUser(){
+        return contestRepository.findAllForUserBetweenDates(LocalDate.now(), LocalDate.now());
+    }
 
+    // Vid ett senare tillfälle lägg till en extra check så man inte kan få ut tävlingar som inte är aktiva.
     public Optional<Contest> findContestByID(Long id) { return contestRepository.findById(id);
     }
 

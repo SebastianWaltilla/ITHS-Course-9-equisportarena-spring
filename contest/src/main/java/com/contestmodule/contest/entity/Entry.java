@@ -61,6 +61,7 @@ public class Entry {
     public Contest getContest() {
         return contest;
     }
+
     public void setContest(Contest contest) {
         this.contest = contest;
     }

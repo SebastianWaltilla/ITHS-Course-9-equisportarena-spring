@@ -110,6 +110,7 @@ public class Contest {
     public Set<Entry> getEntries() {
         return entries;
     }
+
     public void addEntry(Entry entry){
         entries.add(entry);
         entry.setContest(this);

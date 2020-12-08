@@ -1,6 +1,7 @@
 package com.contestmodule.contest.controller;
 
 import com.contestmodule.contest.entity.Entry;
+import com.contestmodule.contest.service.ContestService;
 import com.contestmodule.contest.service.EntryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,12 @@ public class EntryAdminController {
 
     private EntryService entryService;
 
+
+    @GetMapping("/find-all-by-contest-id/{id}")
+    public Iterable<Entry> findAllByContestId(@PathVariable Long id) {
+        return entryService.findAllEntriesByContestId(id);
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity deleteEntry(@PathVariable Long id) {
         if (entryService.findEntryById(id).isPresent()) {
@@ -30,7 +37,7 @@ public class EntryAdminController {
         } return ResponseEntity.notFound().build();
     }
 
-    @PatchMapping("/update-entry/{id}")
+    @PatchMapping("/update/{id}")
     public ResponseEntity<Entry> updateEntry(@PathVariable("id") Long id, @RequestBody Entry updatedEntry) {
 
         Optional<Entry> entryOptional = entryService.findEntryById(id);
@@ -40,8 +47,14 @@ public class EntryAdminController {
         }
         Entry entry = entryOptional.get();
 
-        entry.setContest(updatedEntry.getContest()); //change entry, should it be here or in contestcontroller?
+//        entry.setContest(updatedEntry.getContest()); //change entry, should it be here or in contestcontroller?
+
+        entry.getContest().removeEntry(entry);
+//        entry.getContest().addEntry(updatedEntry);
+        updatedEntry.getContest().addEntry(entry);
+
         entry.setHasPaid(updatedEntry.hasUserPaid());
+
 
         if (updatedEntry.getVideolink() != null) {
             entry.setVideolink(updatedEntry.getVideolink());
@@ -52,6 +65,7 @@ public class EntryAdminController {
         if (updatedEntry.getUserComment() != null) {
             entry.setUserComment(updatedEntry.getUserComment());
         }
+
 
         entryService.createEntry(entry);
         logger.info("createEntry() was called through update-entry with entryId: " + entry.getId());
