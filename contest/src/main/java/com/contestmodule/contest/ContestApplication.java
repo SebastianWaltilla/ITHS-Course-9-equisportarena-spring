@@ -25,29 +25,35 @@ public class ContestApplication {
 
         return args -> {
 
-            Contest contest1 = new Contest("firstcontest",
+            var today = LocalDate.now();
+
+            Contest contest1 = new Contest("First contest, active",
                     "demotävling",
                     10,
-                    LocalDate.of(2020, 12, 2),
-                    LocalDate.of(2020, 12, 24),
-                    new BigDecimal(10.00), "en kram",
+                    today,
+                    today.plusDays(7),
+                    new BigDecimal("10.00"), "en kram",
                     "enkel", "adminkommentar");
 
-            Contest contest2 = new Contest("secondcontest",
+            Contest contest2 = new Contest("secondcontest, future",
                     "demotävling2",
                     10,
-                    LocalDate.of(2020, 10, 1),
-                    LocalDate.of(2020, 10, 2),
-                    new BigDecimal(10.00), "en kram",
+                    today.plusMonths(1),
+                    today.plusMonths(1).plusDays(5),
+                    new BigDecimal("10.00"), "en kram",
                     "enkel", "adminkommentar");
 
-            Contest contest3 = new Contest("thirdcontest",
+            Contest contest3 = new Contest("thirdcontest, future",
                     "demotävling3",
                     10,
-                    LocalDate.of(2020, 12, 25),
-                    LocalDate.of(2020, 12, 26),
-                    new BigDecimal(10.00), "en kram",
+                    today.plusMonths(1),
+                    today.plusMonths(1).plusDays(5),
+                    new BigDecimal("10.00"), "en kram",
                     "enkel", "adminkommentar");
+
+            service.createContest(contest1);
+            service.createContest(contest2);
+            service.createContest(contest3);
 
             Entry entry1 = new Entry(1L,
                     contest1,
@@ -65,9 +71,7 @@ public class ContestApplication {
                     false, "Bert");
 
 
-            service.createContest(contest1);
-            service.createContest(contest2);
-            service.createContest(contest3);
+
 
             entryService.createEntry(entry1);
             entryService.createEntry(entry2);

@@ -1,12 +1,17 @@
 package com.contestmodule.contest.entity;
 
+import com.contestmodule.contest.validator.ContestDateRange;
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+@ContestDateRange
 @Entity
 @Table(name = "contests")
 public class Contest {
@@ -16,17 +21,15 @@ public class Contest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty
+    @NotBlank(message = "name must not be blank")
     private String name;
     @NotEmpty
     private String description;
-    @NotEmpty
+    @Min(2)
     private int maxParticipants;
-    @NotEmpty
     private LocalDate startDate;
-    @NotEmpty
     private LocalDate endDate;
-    @NotEmpty
+    @NotNull
     private BigDecimal entryFee;
     @NotEmpty
     private String contestLevel;

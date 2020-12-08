@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
@@ -13,10 +14,10 @@ public class Entry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty
+    @NotNull
     private Long userId;
 
-    @NotEmpty
+    @NotNull
     @ManyToOne(fetch=FetchType.LAZY)
     private Contest contest;
 
@@ -28,7 +29,7 @@ public class Entry {
     private LocalDate submissionDate;
     private String horseName;
 
-    public Entry(@NotEmpty Long userId, @NotEmpty Contest contest, String userComment, boolean hasPaid, String horseName) {
+    public Entry(@NotNull Long userId, @NotNull Contest contest, String userComment, boolean hasPaid, String horseName) {
         this.userId = userId;
         this.contest = contest;
         this.userComment = userComment;

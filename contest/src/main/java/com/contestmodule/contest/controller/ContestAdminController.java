@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/admin/contest")
+@Validated
 public class ContestAdminController {
 
     Logger logger = LoggerFactory.getLogger(ContestService.class);
@@ -24,12 +26,12 @@ public class ContestAdminController {
     }
 
     @GetMapping("/find-all")
-    public Iterable<Contest> findAllContests(){
+    public Iterable<Contest> findAllContests() {
         return contestService.findAllContests();
     }
 
     @PostMapping("/create")
-    public Contest createContest(@RequestBody Contest contest) {
+    public Contest createContest(@RequestBody @Valid Contest contest) {
         logger.info("createContest() was called with contestname: " + contest.getName());
         return contestService.createContest(contest);
     }
@@ -83,5 +85,5 @@ public class ContestAdminController {
             return new ResponseEntity(id + " was deleted", HttpStatus.OK);
         } return ResponseEntity.notFound().build();
     }
-    }
+}
 
