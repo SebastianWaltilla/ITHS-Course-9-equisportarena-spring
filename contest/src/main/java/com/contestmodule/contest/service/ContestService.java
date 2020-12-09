@@ -28,7 +28,7 @@ public class ContestService {
         return contestRepository.findAllForUserBetweenDates(LocalDate.now(), LocalDate.now());
     }
 
-    // Vid ett senare tillfälle lägg till en extra check så man inte kan få ut tävlingar som inte är aktiva.
+    //TODO Vid ett senare tillfälle lägg till en extra check så man inte kan få ut tävlingar som inte är aktiva.
     public Optional<Contest> findContestByID(Long id) { return contestRepository.findById(id);
     }
 
