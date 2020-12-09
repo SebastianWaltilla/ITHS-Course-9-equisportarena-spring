@@ -1,5 +1,6 @@
 package com.contestmodule.contest.controller;
 
+import com.contestmodule.contest.dao.ContestInfoForUserDao;
 import com.contestmodule.contest.entity.Contest;
 import com.contestmodule.contest.entity.SimpleContestDao;
 import com.contestmodule.contest.service.ContestService;
@@ -7,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -29,6 +31,12 @@ public class ContestController {
 @GetMapping("/active")
     public Iterable<SimpleContestDao> findAllActiveContests(){
         return contestService.findAllContestsForUser();
+
 }
 
+    @GetMapping("/active2")
+    public List<ContestInfoForUserDao> findAllActiveContests2(){
+        return contestService.findAllContestsForUser2();
+
+    }
 }
