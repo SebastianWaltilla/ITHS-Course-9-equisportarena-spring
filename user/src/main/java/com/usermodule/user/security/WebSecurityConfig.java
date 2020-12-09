@@ -5,6 +5,7 @@ import com.usermodule.user.jwt.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.*;
 import org.springframework.security.config.annotation.authentication.builders.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,12 +13,20 @@ import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import static com.usermodule.user.security.SecurityConstants.SIGN_UP_URL;
 
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
 
     @Autowired
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -27,6 +36,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
+
+    private UserDetailsServiceImpl userDetailsService;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -40,6 +52,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+
+    public WebSecurityConfig(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userDetailsService = userDetailsService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Bean
@@ -70,21 +88,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
+    //@Bean
+    //public DaoAuthenticationProvider authenticationProvider() {
+    //    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+    //    authProvider.setUserDetailsService(userDetailsService());
+    //    authProvider.setPasswordEncoder(passwordEncoder());
 
+    //    return authProvider;
+    //}
 
-   //@Bean
-   //public DaoAuthenticationProvider authenticationProvider() {
-   //    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-   //    authProvider.setUserDetailsService(userDetailsService());
-   //    authProvider.setPasswordEncoder(passwordEncoder());
-
-   //    return authProvider;
-   //}
-
-   //@Override
-   //protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-   //    auth.authenticationProvider(authenticationProvider());
-   //}
+    //@Override
+    //protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    //    auth.authenticationProvider(authenticationProvider());
+    //}
 
     //@Override
     //protected void configure(HttpSecurity http) throws Exception {
@@ -104,4 +120,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //            .exceptionHandling().accessDeniedPage("/403")
     //    ;
     //}
+
 }
+
