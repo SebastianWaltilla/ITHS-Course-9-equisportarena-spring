@@ -2,12 +2,17 @@ package com.contestmodule.contest;
 
 import com.contestmodule.contest.entity.Contest;
 import com.contestmodule.contest.entity.Entry;
+import com.contestmodule.contest.entity.Role;
+import com.contestmodule.contest.entity.User;
 import com.contestmodule.contest.service.ContestService;
 import com.contestmodule.contest.service.EntryService;
+import com.contestmodule.contest.service.UserService;
+import com.sun.xml.bind.v2.TODO;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -79,4 +84,30 @@ public class ContestApplication {
 
         };
     }
+    @Bean //TODO Tabort / Skapa default adminkonton
+    public CommandLineRunner demoData(UserService service) {
+        return args -> {
+            Role role = new Role("ADMIN");
+            User user1 = new User("Admin", "Adminsson", "administrationsvägen 1", "admin", "admin");
+
+            user1.getRoles().add(role);
+
+            service.createUser(user1);
+
+            Role role2 = new Role("USER");
+            User user2 = new User("Anders", "Andersson", "hejvägen 2", "user", "user");
+
+            user2.getRoles().add(role2);
+
+            service.createUser(user2);
+
+        };
+    }
+
+    @Bean public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+
 }
+
