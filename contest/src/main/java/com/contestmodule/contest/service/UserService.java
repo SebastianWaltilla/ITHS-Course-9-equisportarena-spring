@@ -2,26 +2,34 @@ package com.contestmodule.contest.service;
 
 
 import com.contestmodule.contest.entity.User;
+import com.contestmodule.contest.repository.RoleRepository;
 import com.contestmodule.contest.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.Optional;
+
 
 @Service
 public class UserService {
 
     private UserRepository userRepository;
+    private RoleRepository roleRepository;
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
 
 
     public User createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.getRoles().add((roleRepository.findByName("USER")));
+        roleRepository.findByName("USER").getUsers().add(user);
         return userRepository.save(user);
     }
 

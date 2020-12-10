@@ -4,6 +4,7 @@ import com.contestmodule.contest.entity.Contest;
 import com.contestmodule.contest.entity.Entry;
 import com.contestmodule.contest.entity.Role;
 import com.contestmodule.contest.entity.User;
+import com.contestmodule.contest.repository.RoleRepository;
 import com.contestmodule.contest.service.ContestService;
 import com.contestmodule.contest.service.EntryService;
 import com.contestmodule.contest.service.UserService;
@@ -60,6 +61,8 @@ public class ContestApplication {
             service.createContest(contest2);
             service.createContest(contest3);
 
+
+
             Entry entry1 = new Entry(1L,
                     contest1,
                     "usercomment",
@@ -85,19 +88,23 @@ public class ContestApplication {
         };
     }
     @Bean //TODO Tabort / Skapa default adminkonton
-    public CommandLineRunner demoData(UserService service) {
+    public CommandLineRunner demoData2(UserService service, RoleRepository roleRepository) {
         return args -> {
             Role role = new Role("ADMIN");
+            Role role2 = new Role("USER");
+
+            roleRepository.save(role);
+            roleRepository.save(role2);
+
             User user1 = new User("Admin", "Adminsson", "administrationsvägen 1", "admin", "admin");
 
-            user1.getRoles().add(role);
+            user1.getRoles().add(roleRepository.findByName("ADMIN"));
 
             service.createUser(user1);
 
-            Role role2 = new Role("USER");
             User user2 = new User("Anders", "Andersson", "hejvägen 2", "user", "user");
 
-            user2.getRoles().add(role2);
+           // user2.getRoles().add(roleRepository.findByName("USER"));
 
             service.createUser(user2);
 
