@@ -1,6 +1,6 @@
 package com.contestmodule.contest.controller;
 
-import com.contestmodule.contest.dao.ContestInfoForUserDao;
+import com.contestmodule.contest.dto.ContestInfoForUserDto;
 import com.contestmodule.contest.entity.Contest;
 import com.contestmodule.contest.entity.SimpleContestDao;
 import com.contestmodule.contest.service.ContestService;
@@ -35,7 +35,7 @@ public class ContestController {
 }
 
     @GetMapping("/active2")
-    public List<ContestInfoForUserDao> findAllActiveContests2(){
+    public List<ContestInfoForUserDto> findAllActiveContests2(){
         return contestService.findAllContestsForUser2();
 
     }

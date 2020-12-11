@@ -1,5 +1,7 @@
 package com.contestmodule.contest.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
@@ -25,6 +27,7 @@ public class User {
     @NotEmpty
     private String email;
     @NotEmpty
+    @JsonIgnore
     private String password;
 
     private LocalDate registeredDate;
@@ -33,10 +36,13 @@ public class User {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id" , referencedColumnName="id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+            name = "user_roles",
+            joinColumns = {
+                    @JoinColumn(name = "user_id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "role_id") })
+    private Set<Role> roles;
 
     public User(String firstname, String lastname, String address, String email, String password) {
         this.firstname = firstname;
@@ -47,7 +53,7 @@ public class User {
         this.isEmailVerified = false;
     }
 
-    protected User() {
+    public User() {
     }
 
     public Set<Role> getRoles() {
@@ -61,7 +67,6 @@ public class User {
     public Long getId() {
         return id;
     }
-
 
     public String getFirstname() {
         return firstname;

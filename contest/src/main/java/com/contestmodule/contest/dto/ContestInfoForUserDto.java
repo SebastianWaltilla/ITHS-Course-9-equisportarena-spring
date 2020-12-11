@@ -1,9 +1,9 @@
-package com.contestmodule.contest.dao;
+package com.contestmodule.contest.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class ContestInfoForUserDao {
+public class ContestInfoForUserDto {
 
     private String name;
     private String description;
@@ -14,11 +14,11 @@ public class ContestInfoForUserDao {
     private String winningAward;
     private boolean placesLeft;
 
-    public ContestInfoForUserDao() {
+    public ContestInfoForUserDto() {
 
     }
 
-    public ContestInfoForUserDao(String name, String description, LocalDate startDate, LocalDate endDate, BigDecimal entryFee, String contestLevel, String winningAward, boolean placesLeft) {
+    public ContestInfoForUserDto(String name, String description, LocalDate startDate, LocalDate endDate, BigDecimal entryFee, String contestLevel, String winningAward, boolean placesLeft) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
@@ -29,7 +29,7 @@ public class ContestInfoForUserDao {
         this.placesLeft = placesLeft;
     }
 
-    public ContestInfoForUserDao(String name, String description){
+    public ContestInfoForUserDto(String name, String description){
         this.name = name;
         this.description = description;
     }
