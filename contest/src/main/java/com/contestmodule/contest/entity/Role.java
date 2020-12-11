@@ -16,23 +16,8 @@ public class Role {
 
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
+    private String description;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "roles_privileges",
-            joinColumns = @JoinColumn(
-                    name = "role_id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "privilege_id"))
-    private Set<Privilege> privileges = new HashSet<>();
-
-    public Role(String name) {
-        this.name = name;
-    }
-
-    public Role(){};
 
     public Long getId() {
         return id;
@@ -41,26 +26,15 @@ public class Role {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public Collection<User> getUsers() {
-        return users;
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-
-    public Collection<Privilege> getPrivileges() {
-        return privileges;
-    }
-
-    public void setPrivileges(Set<Privilege> privileges) {
-        this.privileges = privileges;
-    }
-
-    // remaining getters and setters
 }

@@ -1,6 +1,10 @@
-package com.contestmodule.contest.jwt;
+package com.contestmodule.contest.controller;
 
 
+import com.contestmodule.contest.jwt.JwtRequest;
+import com.contestmodule.contest.jwt.JwtResponse;
+import com.contestmodule.contest.jwt.JwtTokenUtil;
+import com.contestmodule.contest.jwt.JwtUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +39,8 @@ public class JwtAuthenticationController {
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
-
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-
 
         final String token = jwtTokenUtil.generateToken(userDetails);
 

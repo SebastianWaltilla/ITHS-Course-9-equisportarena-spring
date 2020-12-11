@@ -1,6 +1,7 @@
 package com.contestmodule.contest.controller;
 
 
+import com.contestmodule.contest.dto.UserDto;
 import com.contestmodule.contest.entity.User;
 import com.contestmodule.contest.service.UserService;
 import org.slf4j.Logger;
@@ -29,9 +30,9 @@ public class UserController {
 
 
     @PostMapping("/create")
-    public User createUser(@RequestBody User user) {
+    public User createUser(@RequestBody UserDto user) {
         logger.info("createUser() was called with username: " + user.getEmail());
-        return userService.createUser(user);
+        return userService.save(user);
     }
 
     @GetMapping("/find-all")

@@ -1,6 +1,6 @@
 package com.contestmodule.contest.repository;
 
-import com.contestmodule.contest.dao.ContestInfoForUserDao;
+import com.contestmodule.contest.dto.ContestInfoForUserDto;
 import com.contestmodule.contest.entity.Contest;
 import com.contestmodule.contest.entity.SimpleContestDao;
 import org.springframework.data.jpa.repository.Query;
@@ -22,7 +22,7 @@ public interface ContestRepository extends CrudRepository <Contest, Long> {
             " FROM Contest where startDate < ?1 and endDate > ?2")
     Iterable<SimpleContestDao> findAllForUserBetweenDates(LocalDate today, LocalDate copy);
 
-    @Query(value = "SELECT new com.contestmodule.contest.dao.ContestInfoForUserDao(" +
+    @Query(value = "SELECT new com.contestmodule.contest.dto.ContestInfoForUserDto(" +
             "c.name, " +
             "c.description, " +
             "c.startDate, " +
@@ -32,5 +32,5 @@ public interface ContestRepository extends CrudRepository <Contest, Long> {
             "c.winningAward, " +
             "(c.entries.size < c.maxParticipants))" +
             "FROM Contest c where c.startDate <= :today and c.endDate >= :copy ")
-    List<ContestInfoForUserDao> findAllActiveContests(LocalDate today, LocalDate copy);
+    List<ContestInfoForUserDto> findAllActiveContests(LocalDate today, LocalDate copy);
 }

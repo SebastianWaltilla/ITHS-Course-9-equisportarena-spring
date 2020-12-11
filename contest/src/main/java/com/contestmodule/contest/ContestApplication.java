@@ -1,5 +1,6 @@
 package com.contestmodule.contest;
 
+import com.contestmodule.contest.dto.UserDto;
 import com.contestmodule.contest.entity.Contest;
 import com.contestmodule.contest.entity.Entry;
 import com.contestmodule.contest.entity.Role;
@@ -87,29 +88,29 @@ public class ContestApplication {
 
         };
     }
-    @Bean //TODO Tabort / Skapa default adminkonton
-    public CommandLineRunner demoData2(UserService service, RoleRepository roleRepository) {
-        return args -> {
-            Role role = new Role("ADMIN");
-            Role role2 = new Role("USER");
-
-            roleRepository.save(role);
-            roleRepository.save(role2);
-
-            User user1 = new User("Admin", "Adminsson", "administrationsvägen 1", "admin", "admin");
-
-            user1.getRoles().add(roleRepository.findByName("ADMIN"));
-
-            service.createUser(user1);
-
-            User user2 = new User("Anders", "Andersson", "hejvägen 2", "user", "user");
-
-           // user2.getRoles().add(roleRepository.findByName("USER"));
-
-            service.createUser(user2);
-
-        };
-    }
+//    @Bean //TODO Tabort / Skapa default adminkonton
+//    public CommandLineRunner demoData2(UserService service, RoleRepository roleRepository) {
+//        return args -> {
+//            Role role = new Role("ADMIN");
+//            Role role2 = new Role("USER");
+//
+//            roleRepository.save(role);
+//            roleRepository.save(role2);
+//
+//            UserDto user1 = new UserDto("Sune", "Rolfsson", "administrationsvägen 1", "sune@admin.se", "password");
+//
+//            user1.getRoles().add(roleRepository.findRoleByName("ADMIN"));
+//
+//            service.save(user1);
+//
+//            User user2 = new User("Anders", "Andersson", "hejvägen 2", "user", "user");
+//
+//           // user2.getRoles().add(roleRepository.findByName("USER"));
+//
+//            service.createUser(user2);
+//
+//        };
+//    }
 
     @Bean public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();

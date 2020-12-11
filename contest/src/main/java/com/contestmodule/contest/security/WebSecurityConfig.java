@@ -1,8 +1,8 @@
 package com.contestmodule.contest.security;
 
-import com.contestmodule.contest.jwt.JwtAuthenticationController;
 import com.contestmodule.contest.jwt.JwtAuthenticationEntryPoint;
 import com.contestmodule.contest.jwt.JwtRequestFilter;
+import com.contestmodule.contest.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
 
-    private UserDetailsServiceImpl userDetailsService;
+    private UserService userService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
@@ -51,15 +51,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-    public WebSecurityConfig(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userDetailsService = userDetailsService;
+    public WebSecurityConfig(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userService = userService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new UserDetailsServiceImpl();
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        return new UserDetailsService();
+//    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
