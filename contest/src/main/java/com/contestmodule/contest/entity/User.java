@@ -27,14 +27,13 @@ public class User {
     @NotEmpty
     private String email;
     @NotEmpty
-    @JsonIgnore
     private String password;
 
     private LocalDate registeredDate;
     private LocalDate lastLoggedIn;
     private boolean isEmailVerified;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
             joinColumns = {
@@ -42,7 +41,7 @@ public class User {
             },
             inverseJoinColumns = {
                     @JoinColumn(name = "role_id") })
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
     public User(String firstname, String lastname, String address, String email, String password) {
         this.firstname = firstname;

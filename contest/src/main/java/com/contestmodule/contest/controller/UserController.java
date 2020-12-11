@@ -30,7 +30,7 @@ public class UserController {
 
 
     @PostMapping("/create")
-    public User createUser(@RequestBody UserDto user) {
+    public User createUser(@RequestBody User user) {
         logger.info("createUser() was called with username: " + user.getEmail());
         return userService.save(user);
     }

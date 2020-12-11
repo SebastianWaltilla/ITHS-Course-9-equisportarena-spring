@@ -23,6 +23,13 @@ public class Role {
         return id;
     }
 
+    public Role(){}
+
+    public Role(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public String getName() {
         return name;
     }
