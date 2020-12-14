@@ -9,12 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/admin/contest")
 @Validated
+@RolesAllowed("ADMIN")
 public class ContestAdminController {
 
     Logger logger = LoggerFactory.getLogger(ContestService.class);

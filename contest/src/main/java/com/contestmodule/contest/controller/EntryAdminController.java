@@ -9,10 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/admin/entry")
+@RolesAllowed("ADMIN")
 public class EntryAdminController {
 
     public EntryAdminController(EntryService entryService) {

@@ -7,11 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/contest")
+@RolesAllowed({"USER","ADMIN"})
 public class ContestController {
 
     Logger logger = LoggerFactory.getLogger(ContestService.class);
