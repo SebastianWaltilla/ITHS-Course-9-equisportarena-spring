@@ -54,7 +54,7 @@ public class UserService{
         return userRepository.findByEmail(email);
     }
 
-    public User save(User user) {
+    public User save(User user, boolean isAdmin) {
         logger.info(user.getPassword() + " :USERSERVICE SAVE() user.getPassword()");
         logger.info(user.getEmail() + " :USERSERVICE SAVE() user.getEmail()");
         logger.info(user.getFirstname() + " :USERSERVICE SAVE() user.getFirstname()");
@@ -62,6 +62,8 @@ public class UserService{
         logger.info("ROLESERVICE.FINDROLEBYNAME(\"USER\"): " + roleService.findRoleByName("USER").getName());
         logger.info("ROLESERVICE: " + roleService);
 
+        if (isAdmin)
+            user.getRoles().add(roleService.findRoleByName("ADMIN"));
         user.getRoles().add(roleService.findRoleByName("USER"));
         return userRepository.save(user);
     }
