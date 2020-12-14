@@ -25,20 +25,14 @@ public class JwtUserDetailsService implements UserDetailsService {
         var user = userRepository.findByEmail(username);
 
         if (username.equals(user.getEmail())) {
+            Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+            user.getRoles().forEach(role -> {
+                authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
+            });
             return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
-                    new ArrayList<>());
+                    authorities);
         } else {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
-    }
-
-
-
-    private Set<SimpleGrantedAuthority> getAuthority(User user) {
-        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-        user.getRoles().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
-        });
-        return authorities;
     }
 }
