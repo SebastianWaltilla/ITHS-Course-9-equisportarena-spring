@@ -25,6 +25,8 @@ public class User {
     @NotEmpty
     private String address;
     @NotEmpty
+    @Column(unique=true)
+    //TODO Throw detailed error instead of 500 when trying to create two entities with the same email
     private String email;
     @NotEmpty
     private String password;
