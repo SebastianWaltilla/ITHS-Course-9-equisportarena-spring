@@ -99,7 +99,6 @@ public class ContestApplication {
             roleService.save(userRole);
 
             User user1 = new User("Sune", "Rolfsson", "administrationsvägen 1", "admin", "admin");
-            user1.getRoles().add(roleService.findRoleByName("ADMIN"));
             service.save(user1, true);
 
 //
