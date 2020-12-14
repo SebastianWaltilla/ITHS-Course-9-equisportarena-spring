@@ -35,12 +35,7 @@ public class UserController {
     @PostMapping("/create")
     public User createUser(@RequestBody User user) {
         logger.info("createUser() was called with username: " + user.getEmail());
-        return userService.save(user);
-    }
-
-    @GetMapping("/find-all")
-    public Iterable<User> findAllUsers() {
-        return userService.findAllUsers();
+        return userService.save(user, false);
     }
 
     @GetMapping("/id/{id}")
