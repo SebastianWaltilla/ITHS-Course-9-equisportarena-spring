@@ -1,4 +1,6 @@
 package com.contestmodule.contest.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
@@ -9,6 +11,9 @@ import java.util.Set;
 @Table(name = "roles")
 public class Role {
 
+    public static final String USER = "ROLE_USER";
+    public static final String ADMIN = "ROLE_ADMIN";
+
     @Id
     @Column(name = "role_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +23,8 @@ public class Role {
 
     private String description;
 
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -28,6 +35,16 @@ public class Role {
     public Role(String name, String description) {
         this.name = name;
         this.description = description;
+    }
+
+    public void addUser(User user){
+        this.users.add(user);
+        user.getRoles().add(this);
+    }
+
+    public void removeUser(User user){
+        this.users.remove(user);
+        user.getRoles().remove(this);
     }
 
     public String getName() {
@@ -44,4 +61,12 @@ public class Role {
         this.description = description;
     }
 
+    @JsonIgnore
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
 }

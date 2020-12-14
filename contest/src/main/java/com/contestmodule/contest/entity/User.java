@@ -1,16 +1,23 @@
 package com.contestmodule.contest.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails, Serializable {
+
 
 
     @Id
@@ -33,15 +40,13 @@ public class User {
     private LocalDate lastLoggedIn;
     private boolean isEmailVerified;
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = {
-                    @JoinColumn(name = "user_id")
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "role_id") })
+    @ManyToMany(fetch=FetchType.EAGER)
+    @JoinTable(name = "user_role",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id") })
     private Set<Role> roles = new HashSet<>();
+
+
 
     public User(String firstname, String lastname, String address, String email, String password) {
         this.firstname = firstname;
@@ -129,5 +134,40 @@ public class User {
 
     public void setEmailVerified(Boolean emailVerified) {
         isEmailVerified = emailVerified;
+    }
+
+    @Override
+    public Set<? extends GrantedAuthority> getAuthorities() {
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        this.getRoles().forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
+        });
+        return authorities;
+    }
+
+    @Override
+    public String getUsername() {
+
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

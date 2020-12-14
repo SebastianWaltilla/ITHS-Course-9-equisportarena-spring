@@ -4,7 +4,7 @@ package com.contestmodule.contest.controller;
 import com.contestmodule.contest.jwt.JwtRequest;
 import com.contestmodule.contest.jwt.JwtResponse;
 import com.contestmodule.contest.jwt.JwtTokenUtil;
-import com.contestmodule.contest.jwt.JwtUserDetailsService;
+import com.contestmodule.contest.service.ContestUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin
-public class JwtAuthenticationController {
+public class AuthenticationController {
 
-    Logger logger = LoggerFactory.getLogger(JwtAuthenticationController.class);
+    Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -34,12 +34,13 @@ public class JwtAuthenticationController {
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    private JwtUserDetailsService userDetailsService;
+    private ContestUserDetailsService userDetailsService;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+        logger.info(authenticationRequest.getUsername() + ": authenticationRequest.getUsername()");
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
         final String token = jwtTokenUtil.generateToken(userDetails);

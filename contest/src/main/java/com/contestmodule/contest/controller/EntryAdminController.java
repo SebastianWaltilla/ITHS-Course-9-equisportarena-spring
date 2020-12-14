@@ -1,6 +1,7 @@
 package com.contestmodule.contest.controller;
 
 import com.contestmodule.contest.entity.Entry;
+import com.contestmodule.contest.entity.Role;
 import com.contestmodule.contest.service.ContestService;
 import com.contestmodule.contest.service.EntryService;
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.Optional;
 
 @RestController
@@ -34,7 +36,8 @@ public class EntryAdminController {
         if (entryService.findEntryById(id).isPresent()) {
             entryService.deleteEntry(id);
             return new ResponseEntity(id + " was deleted", HttpStatus.OK);
-        } return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PatchMapping("/update/{id}")

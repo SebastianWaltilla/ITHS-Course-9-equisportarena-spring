@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -26,8 +27,6 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
-
 
     @PostMapping("/create")
     public User createUser(@RequestBody User user) {
@@ -49,6 +48,8 @@ public class UserController {
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
+
+
 
     @GetMapping("/403")
     public String error403(){

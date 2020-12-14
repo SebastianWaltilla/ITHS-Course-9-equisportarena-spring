@@ -1,4 +1,4 @@
-package com.contestmodule.contest.jwt;
+package com.contestmodule.contest.service;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -15,7 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class JwtUserDetailsService implements UserDetailsService {
+public class ContestUserDetailsService implements UserDetailsService {
 
     @Autowired
     UserRepository userRepository;
@@ -34,7 +34,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 
 
 
-    private Set<SimpleGrantedAuthority> getAuthority(User user) {
+    private Set<SimpleGrantedAuthority> getAuthorities(User user) {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
         user.getRoles().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));

@@ -1,6 +1,7 @@
 package com.contestmodule.contest.controller;
 
 import com.contestmodule.contest.entity.Contest;
+import com.contestmodule.contest.entity.Role;
 import com.contestmodule.contest.service.ContestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.util.Optional;
 
