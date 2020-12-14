@@ -37,9 +37,9 @@ public class AdminUserController {
         return userService.save(user, true);
     }
 
-    @DeleteMapping("delete/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+    @DeleteMapping("delete/{username}")
+    public void deleteUser(@PathVariable String username) {
+        userService.deleteUser(username);
     }
 
 

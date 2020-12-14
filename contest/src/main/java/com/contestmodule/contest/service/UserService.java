@@ -45,10 +45,11 @@ public class UserService{
         return userRepository.findAll();
     }
 
-    public void deleteUser(Long id) {
-        Optional<User> foundUser = userRepository.findById(id);
+    public void deleteUser(String userName) {
+        Optional<User> foundUser = Optional.ofNullable(userRepository.findByEmail(userName));
         userRepository.deleteById(foundUser.get().getId());
     }
+
 
     public User getUserByUsername(String email) {
         return userRepository.findByEmail(email);
