@@ -25,6 +25,10 @@ public class EntryAdminController {
 
     private EntryService entryService;
 
+    @GetMapping("/find-all")
+    public Iterable<Entry> findAllEntries() {
+        return entryService.findAllEntries();
+    }
 
     @GetMapping("/find-all-by-contest-id/{id}")
     public Iterable<Entry> findAllByContestId(@PathVariable Long id) {
