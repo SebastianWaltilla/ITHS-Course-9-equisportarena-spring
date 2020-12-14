@@ -30,10 +30,7 @@ public class EntryController {
         return entryService.createEntry(entry);
     }
 
-    @GetMapping("/find-all")
-    public Iterable<Entry> findAllEntries() {
-        return entryService.findAllEntries();
-    }
+
 
     @PatchMapping("/update-entry/{id}")
     public ResponseEntity<Entry> updateEntry(@PathVariable("id") Long id, @RequestBody Entry updatedEntry) {
