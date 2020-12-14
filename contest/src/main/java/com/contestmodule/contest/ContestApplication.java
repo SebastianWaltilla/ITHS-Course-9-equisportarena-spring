@@ -8,6 +8,7 @@ import com.contestmodule.contest.entity.User;
 import com.contestmodule.contest.repository.RoleRepository;
 import com.contestmodule.contest.service.ContestService;
 import com.contestmodule.contest.service.EntryService;
+import com.contestmodule.contest.service.RoleService;
 import com.contestmodule.contest.service.UserService;
 import com.sun.xml.bind.v2.TODO;
 import org.springframework.boot.CommandLineRunner;
@@ -88,20 +89,21 @@ public class ContestApplication {
 
         };
     }
-//    @Bean //TODO Tabort / Skapa default adminkonton
-//    public CommandLineRunner demoData2(UserService service, RoleRepository roleRepository) {
-//        return args -> {
-//            Role role = new Role("ADMIN");
-//            Role role2 = new Role("USER");
+    @Bean //TODO Tabort / Skapa default adminkonton
+    public CommandLineRunner demoData2(UserService service, RoleService roleService) {
+        return args -> {
+            Role adminRole = new Role("ADMIN", "Admin access");
+            Role userRole = new Role("USER", "Limited access");
+
+            roleService.save(adminRole);
+            roleService.save(userRole);
+
+            User user1 = new User("Sune", "Rolfsson", "administrationsvägen 1", "admin", "admin");
+            user1.getRoles().add(roleService.findRoleByName("ADMIN"));
+            service.save(user1);
+
 //
-//            roleRepository.save(role);
-//            roleRepository.save(role2);
-//
-//            UserDto user1 = new UserDto("Sune", "Rolfsson", "administrationsvägen 1", "sune@admin.se", "password");
-//
-//            user1.getRoles().add(roleRepository.findRoleByName("ADMIN"));
-//
-//            service.save(user1);
+
 //
 //            User user2 = new User("Anders", "Andersson", "hejvägen 2", "user", "user");
 //
@@ -109,8 +111,8 @@ public class ContestApplication {
 //
 //            service.createUser(user2);
 //
-//        };
-//    }
+        };
+    }
 
     @Bean public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();

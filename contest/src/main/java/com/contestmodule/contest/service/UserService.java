@@ -1,11 +1,14 @@
 package com.contestmodule.contest.service;
 
 
+import com.contestmodule.contest.controller.UserController;
 import com.contestmodule.contest.dto.UserDto;
 import com.contestmodule.contest.entity.Role;
 import com.contestmodule.contest.entity.User;
 import com.contestmodule.contest.repository.RoleRepository;
 import com.contestmodule.contest.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,13 +24,15 @@ import java.util.Set;
 
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService{
 
     private UserRepository userRepository;
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private RoleService roleService;
 
-    public UserService(UserRepository userRepository) {
+    Logger logger = LoggerFactory.getLogger(UserService.class);
+
+    public UserService(UserRepository userRepository, RoleService roleService) {
         this.userRepository = userRepository;
         this.roleService = roleService;
     }
@@ -49,43 +54,15 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email);
     }
 
-    private Set<SimpleGrantedAuthority> getAuthority(User user) {
-        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-        user.getRoles().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
-        });
-        return authorities;
-    }
+    public User save(User user) {
+        logger.info(user.getPassword() + " :USERSERVICE SAVE() user.getPassword()");
+        logger.info(user.getEmail() + " :USERSERVICE SAVE() user.getEmail()");
+        logger.info(user.getFirstname() + " :USERSERVICE SAVE() user.getFirstname()");
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        logger.info("ROLESERVICE.FINDROLEBYNAME(\"USER\"): " + roleService.findRoleByName("USER").getName());
+        logger.info("ROLESERVICE: " + roleService);
 
-    @Override
-    public UserDetails loadUserByUsername(String username)
-            throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(username); // getUserByUsername
-
-        if (user == null) {
-            throw new UsernameNotFoundException("Could not find user");
-        }
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(), user.getPassword(), true, true, true,
-                true, getAuthority(user));
-    }
-
-    public User save(UserDto user) {
-
-        User newUser = user.getUserFromDto();
-        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        Role role = roleService.findRoleByName("USER");
-        Set<Role> roleSet = new HashSet<>();
-        roleSet.add(role);
-
-        // TODO: 2020-12-11 admin bör skapas i en separat metod!
-//        if(newUser.getEmail().split("@")[1].equals("admin.edu")){
-//            role = roleService.findRoleByName("ADMIN");
-//            roleSet.add(role);
-//        }
-
-        newUser.setRoles(roleSet);
-        return userRepository.save(newUser);
+        user.getRoles().add(roleService.findRoleByName("USER"));
+        return userRepository.save(user);
     }
 }
