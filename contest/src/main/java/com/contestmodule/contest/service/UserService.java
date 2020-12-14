@@ -62,11 +62,7 @@ public class UserService{
         logger.info("ROLESERVICE.FINDROLEBYNAME(\"USER\"): " + roleService.findRoleByName("USER").getName());
         logger.info("ROLESERVICE: " + roleService);
 
-        user
-                .getRoles()
-                .add(
-                        roleService
-                        .findRoleByName("USER"));
+        user.getRoles().add(roleService.findRoleByName("USER"));
         return userRepository.save(user);
     }
 }
