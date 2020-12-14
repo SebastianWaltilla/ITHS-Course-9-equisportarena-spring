@@ -2,7 +2,6 @@ package com.contestmodule.contest.controller;
 
 import com.contestmodule.contest.dto.ContestInfoForUserDto;
 import com.contestmodule.contest.entity.Contest;
-import com.contestmodule.contest.entity.SimpleContestDao;
 import com.contestmodule.contest.service.ContestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,15 +27,10 @@ public class ContestController {
         return contestService.findContestByID(id);  //TODO Vid ett senare tillfälle lägg till en extra check så man inte kan få ut tävlingar som inte är aktiva.
     }
 
-@GetMapping("/active")
-    public Iterable<SimpleContestDao> findAllActiveContests(){
+
+    @GetMapping("/active")
+    public List<ContestInfoForUserDto> findAllActiveContests(){
         return contestService.findAllContestsForUser();
-
-}
-
-    @GetMapping("/active2")
-    public List<ContestInfoForUserDto> findAllActiveContests2(){
-        return contestService.findAllContestsForUser2();
 
     }
 }
