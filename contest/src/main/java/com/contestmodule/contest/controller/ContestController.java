@@ -5,6 +5,8 @@ import com.contestmodule.contest.entity.Contest;
 import com.contestmodule.contest.service.ContestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
@@ -25,8 +27,10 @@ public class ContestController {
     }
 
 @GetMapping("/id/{id}")
-    public Optional<Contest> findContestByID(@PathVariable Long id) {
-        return contestService.findContestByID(id);  //TODO Vid ett senare tillfälle lägg till en extra check så man inte kan få ut tävlingar som inte är aktiva.
+    public ResponseEntity<ContestInfoForUserDto> findContestByID(@PathVariable Long id) {
+        return contestService.findContestInfoForUserByID(id)
+                .map(ResponseEntity::ok)
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
 

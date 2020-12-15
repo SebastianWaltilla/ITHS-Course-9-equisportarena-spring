@@ -36,4 +36,8 @@ public class ContestService {
     public List<ContestInfoForUserDto> findAllContestsForUser() {
        return contestRepository.findAllActiveContests(LocalDate.now(), LocalDate.now());
     }
+
+    public Optional<ContestInfoForUserDto> findContestInfoForUserByID(Long id) {
+        return contestRepository.findContestInfoForUserById(id, LocalDate.now());
+    }
 }
