@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ContestRepository extends CrudRepository <Contest, Long> {
@@ -23,4 +24,17 @@ public interface ContestRepository extends CrudRepository <Contest, Long> {
             "(c.entries.size < c.maxParticipants))" +
             "FROM Contest c where c.startDate <= :today and c.endDate >= :copy ")
     List<ContestInfoForUserDto> findAllActiveContests(LocalDate today, LocalDate copy);
+
+
+    @Query(value = "SELECT new com.contestmodule.contest.dto.ContestInfoForUserDto(" +
+            "c.name, " +
+            "c.description, " +
+            "c.startDate, " +
+            "c.endDate, " +
+            "c.entryFee, " +
+            "c.contestLevel, " +
+            "c.winningAward, " +
+            "(c.entries.size < c.maxParticipants))" +
+            "FROM Contest c where c.startDate <= :today and c.endDate >= :today and c.id = :id")
+    Optional<ContestInfoForUserDto> findContestInfoForUserById(Long id, LocalDate today);
 }
