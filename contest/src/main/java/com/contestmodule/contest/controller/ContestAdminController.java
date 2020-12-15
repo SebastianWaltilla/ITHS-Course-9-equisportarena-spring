@@ -32,8 +32,8 @@ public class ContestAdminController {
         return contestService.findAllContests();
     }
 
-    @PostMapping("/create")
-    public Contest createContest(@RequestBody @Valid Contest contest) {
+    @PostMapping("/create")                 //@Validation
+    public Contest createContest(@RequestBody  Contest contest) {
         logger.info("createContest() was called with contestname: " + contest.getName());
         return contestService.createContest(contest);
     }

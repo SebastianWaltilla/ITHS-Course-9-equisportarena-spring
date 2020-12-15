@@ -51,16 +51,14 @@ public class EntryAdminController {
         if (!entryOptional.isPresent()) {
             return ResponseEntity.notFound().build();
         }
+
         Entry entry = entryOptional.get();
 
 //        entry.setContest(updatedEntry.getContest()); //change entry, should it be here or in contestcontroller?
 
         entry.getContest().removeEntry(entry);
-//        entry.getContest().addEntry(updatedEntry);
-        updatedEntry.getContest().addEntry(entry);
-
+        updatedEntry.getContest().addEntry(entry); //        entry.getContest().addEntry(updatedEntry);
         entry.setHasPaid(updatedEntry.hasUserPaid());
-
 
         if (updatedEntry.getVideolink() != null) {
             entry.setVideolink(updatedEntry.getVideolink());
@@ -71,7 +69,6 @@ public class EntryAdminController {
         if (updatedEntry.getUserComment() != null) {
             entry.setUserComment(updatedEntry.getUserComment());
         }
-
 
         entryService.createEntry(entry);
         logger.info("createEntry() was called through update-entry with entryId: " + entry.getId());
