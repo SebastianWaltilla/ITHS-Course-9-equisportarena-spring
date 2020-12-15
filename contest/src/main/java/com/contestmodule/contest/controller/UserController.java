@@ -32,7 +32,6 @@ public class UserController {
         this.userService = userService;
     }
 
-
     @PermitAll
     @PostMapping("/create")
     public User createUser(@RequestBody User user) {
@@ -52,24 +51,4 @@ public class UserController {
         userService.deleteUser(username);
     }
 
-
-    @GetMapping("/403")
-    public String error403(){
-        return "403";
-    }
-
-    @GetMapping(value = "/any-page", produces = MediaType.TEXT_HTML_VALUE)
-    @ResponseBody
-    public String returnSingleHTTPpage(){
-
-        String path = "user/src/main/resources/templates/anyPage.html";
-        String content = "dummyText";
-        try {
-            content = Files.readString(Paths.get(path));
-            System.out.println(content);
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-        return content;
-    }
 }
