@@ -35,7 +35,6 @@ public class UserController {
         this.userService = userService;
     }
 
-
     @PermitAll
     @PostMapping("/create")
     public User createUser(@Valid @RequestBody User user) {
