@@ -36,19 +36,61 @@ Bearer-Token: needed
 }
 ____________________________________________________________________
 
-### FINDALL CONTEST
+### DELETE ( users ) 
+
+DELETE http://localhost:8080/user/delete
+
+Delete is possible after a user is authenticated, DELETE deletes the authenticated user. 
+____________________________________________________________________
+
+### FINDALL  ( contest )
 GET http://localhost:8080/admin/contest/find-all
 
 Bearer-Token: needed with admin access
 Content-Type: application/json
     
-    {
-    "name":"Valid horse contest",
-    "description":"desc",
-    "maxParticipants":3,
-    "startDate":"2021-10-20",
-    "endDate":"2021-10-27",
-    "entryFee":10.00,
-    "contestLevel":"medium"
-}
+    	{
+    	"name":"Valid horse contest",
+	"description":"desc",
+	"maxParticipants":3,
+	"startDate":"2021-10-20",
+	"endDate":"2021-10-27",
+	"entryFee":10.00,
+	"contestLevel":"medium"
+	}
 ___________________________________________________________________
+
+### CREATE CONTEST
+Post http://localhost:8080/admin/contest/create
+
+Bearer-Token: needed with admin access
+Content-Type: application/json
+
+	{
+	"name": "First contest, active",
+	"description": "Contest with horses",
+	"maxParticipants": 10,
+	"startDate": "2020-12-15",
+	"endDate": "2020-12-22",
+	"entryFee": 10.00,
+	"contestLevel": "Beginner",
+	"winningAward": "A new horse",
+	"adminComment": "Comment from administrator"
+	}
+___________________________________________________________________
+
+### CREATE ENTRY
+Post http://localhost:8080/entry/create
+
+Bearer-Token: needed with admin access
+Content-Type: application/json
+
+	{
+	"userId": 1,
+	"contestId": 1,
+	"videoLink": "<Link to video>",
+	"userComment": "This is me and my horse",
+	"horsename": "FlashGordon"
+	}
+	
+
