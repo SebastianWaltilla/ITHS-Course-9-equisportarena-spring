@@ -40,7 +40,8 @@ ____________________________________________________________________
 
 DELETE http://localhost:8080/user/delete
 
-Delete is possible after a user is authenticated, DELETE deletes the authenticated user. 
+Delete is possible after a user is authenticated, DELETE deletes the authenticated user by its token.
+
 ____________________________________________________________________
 
 ### FINDALL  ( contest )
