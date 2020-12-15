@@ -18,7 +18,7 @@ public class Entry {
     private Long userId;
 
     @NotNull
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.EAGER)
     private Contest contest;
 
     private String videolink;
@@ -128,4 +128,7 @@ public class Entry {
     public int hashCode() {
         return getClass().hashCode();
     }
+
+
+
 }

@@ -39,14 +39,14 @@ public class EntryController {
         logger.info(entryDto.getContestId() + "contest ID");
 
         Optional<Contest> contest = contestService.findContestByID(entryDto.getContestId());
-        Optional<Entry> check = entryService.findEntryByUserId(entryDto.getUserId(), entryDto.getContestId());
 
-            logger .info(check.toString());
+        if(contest.isEmpty()){
+            return new ResponseEntity<EntryDto>(entryDto, HttpStatus.NOT_FOUND);
+        }
 
-        if(check.isEmpty() && contest.isPresent()){
-            logger.info("---------------------------  before Create");
+        Optional<Entry> entry = entryService.findEntryByUserId(entryDto.getUserId(), entryDto.getContestId());
+        if(entry.isEmpty() && contest.isPresent()){
             entryService.createEntry(entryDto.getEntryFromEntryDto(contest.get()));
-            logger.info("------------------------  before return");
             return new ResponseEntity<EntryDto>(entryDto, HttpStatus.OK);
         } else {
             throw new UserAlreadyInContestException(
