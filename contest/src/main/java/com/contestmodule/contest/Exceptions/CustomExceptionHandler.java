@@ -30,7 +30,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
         ErrorResponse error = new ErrorResponse("Email Already Exists", details);
-        return new ResponseEntity(error, HttpStatus.CONFLICT);
+        return new ResponseEntity(error, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
