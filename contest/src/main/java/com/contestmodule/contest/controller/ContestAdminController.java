@@ -50,9 +50,12 @@ public class ContestAdminController {
 
     @PatchMapping("/partial-update-contest/{id}")
     public ResponseEntity<Contest> partialUpdateContest(@Valid @PathVariable("id") Long id, @RequestBody Contest updateContest) throws JsonProcessingException {
-        objectMapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_EMPTY);
+        objectMapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
+        logger.info("Id: " + id);
 
         Optional<Contest> contestOptional = contestService.findContestByID(id);
+
+        logger.info("Requestbody: " + updateContest.getId());
 
         if(contestOptional.isPresent()){
             var contest = contestOptional.get();
@@ -75,10 +78,5 @@ public class ContestAdminController {
             return new ResponseEntity(id + " was deleted", HttpStatus.OK);
         } return ResponseEntity.notFound().build();
     }
-
-//    @PutMapping("/update-contest/{id}")
-//    public ResponseEntity updateContest(@PathVariable("id") Long id) {
-//
-//    }
 }
 
