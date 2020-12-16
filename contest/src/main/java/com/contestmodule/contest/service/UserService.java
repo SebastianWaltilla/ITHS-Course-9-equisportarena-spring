@@ -17,10 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 
 @Service
@@ -41,14 +38,19 @@ public class UserService{
         return userRepository.findById(id);
     }
 
-
-    public Iterable<User> findAllUsers() {
+    public List<User> findAllUsers() {
         return userRepository.findAll();
     }
 
     public void deleteUser(String userName) {
         Optional<User> foundUser = Optional.ofNullable(userRepository.findByEmail(userName));
         userRepository.deleteById(foundUser.get().getId());
+    }
+
+    public void deleteUser(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent())
+            userRepository.delete(user.get());
     }
 
 
