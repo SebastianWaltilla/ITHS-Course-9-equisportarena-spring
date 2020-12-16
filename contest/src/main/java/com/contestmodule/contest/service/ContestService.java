@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -21,9 +22,13 @@ public class ContestService {
         return contestRepository.save(contest) ;
     }
 
+    public Contest updateContest(Contest contest) {
+        return contestRepository.save(contest);
+    }
+
     public Iterable<Contest> findAllContests(){ return contestRepository.findAll();}
 
-
+//    public Contest updateContest()
 
     //TODO Vid ett senare tillfälle lägg till en extra check så man inte kan få ut tävlingar som inte är aktiva.
     public Optional<Contest> findContestByID(Long id) { return contestRepository.findById(id);
