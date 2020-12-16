@@ -54,10 +54,8 @@ public class EntryAdminController {
 
         Entry entry = entryOptional.get();
 
-//        entry.setContest(updatedEntry.getContest()); //change entry, should it be here or in contestcontroller?
-
         entry.getContest().removeEntry(entry);
-        updatedEntry.getContest().addEntry(entry); //        entry.getContest().addEntry(updatedEntry);
+        updatedEntry.getContest().addEntry(entry);
         entry.setHasPaid(updatedEntry.hasUserPaid());
 
         if (updatedEntry.getVideolink() != null) {
@@ -71,8 +69,6 @@ public class EntryAdminController {
         }
 
         entryService.createEntry(entry);
-        logger.info("createEntry() was called through update-entry with entryId: " + entry.getId());
-        logger.info("Entry" + entry.getUserId() + "was updated");
 
         return ResponseEntity.noContent().build();
     }
