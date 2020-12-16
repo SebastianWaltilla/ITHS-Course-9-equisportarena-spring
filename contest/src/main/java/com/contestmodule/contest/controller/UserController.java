@@ -1,6 +1,8 @@
 package com.contestmodule.contest.controller;
 
 
+import com.contestmodule.contest.Exceptions.UserAlreadyExistsException;
+import com.contestmodule.contest.Exceptions.UserNotFoundException;
 import com.contestmodule.contest.dto.UserDto;
 import com.contestmodule.contest.entity.User;
 import com.contestmodule.contest.service.UserService;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -34,14 +37,21 @@ public class UserController {
 
     @PermitAll
     @PostMapping("/create")
-    public User createUser(@RequestBody User user) {
+    public User createUser(@Valid @RequestBody User user) {
         logger.info("createUser() was called with username: " + user.getEmail());
-        return userService.save(user, false);
+        if (userService.getUserByUsername(user.getEmail()) != null) {
+            throw new UserAlreadyExistsException("This email is already registered!");
+        } else
+            return userService.save(user, false);
     }
 
     @GetMapping("/id/{id}")
     public Optional<User> findUserById(@PathVariable Long id) {
-        return userService.findUserById(id);
+        Optional<User> user = userService.findUserById(id);
+        if (user.isPresent())
+            return user;
+        else
+            throw new UserNotFoundException("This user does not exist!");
     }
 
     @DeleteMapping("/delete")
@@ -50,5 +60,4 @@ public class UserController {
         String username = auth.getName();
         userService.deleteUser(username);
     }
-
 }
