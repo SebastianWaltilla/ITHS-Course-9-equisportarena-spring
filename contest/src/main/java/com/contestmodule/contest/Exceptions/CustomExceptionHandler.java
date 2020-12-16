@@ -25,6 +25,15 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity(error, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(CurrentlyNoActiveContestsException.class)
+    public final ResponseEntity<Object> handleNoActiveContestsException(CurrentlyNoActiveContestsException ex, WebRequest request){
+        List<String> details = new ArrayList<>();
+        details.add(ex.getLocalizedMessage());
+        ErrorResponse error = new ErrorResponse("No contests", details);
+        return new ResponseEntity(error, HttpStatus.OK);
+    }
+
+
     @ExceptionHandler(UserAlreadyExistsException.class)
     public final ResponseEntity<Object> handleUserAlreadyExists(UserAlreadyExistsException ex, WebRequest request) {
         List<String> details = new ArrayList<>();
