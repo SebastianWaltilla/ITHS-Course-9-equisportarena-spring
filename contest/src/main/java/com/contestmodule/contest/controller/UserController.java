@@ -3,12 +3,13 @@ package com.contestmodule.contest.controller;
 
 import com.contestmodule.contest.Exceptions.UserAlreadyExistsException;
 import com.contestmodule.contest.Exceptions.UserNotFoundException;
-import com.contestmodule.contest.dto.UserDto;
+import com.contestmodule.contest.dto.UserNoPasswordDto;
 import com.contestmodule.contest.entity.User;
 import com.contestmodule.contest.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -16,41 +17,40 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Optional;
 
 
 @RestController
 @RequestMapping("/user")
-@RolesAllowed("USER")
+@RolesAllowed({"USER","ADMIN"})
 public class UserController {
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    private UserService userService;
+    private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @PermitAll
-    @PostMapping("/create")
-    public User createUser(@Valid @RequestBody User user) {
+    @PostMapping("/register")
+    public UserNoPasswordDto createUser(@Valid @RequestBody User user) {
         logger.info("createUser() was called with username: " + user.getEmail());
         if (userService.getUserByUsername(user.getEmail()) != null) {
             throw new UserAlreadyExistsException("This email is already registered!");
         } else
-            return userService.save(user, false);
+            return new UserNoPasswordDto().getUserNoPasswordDtoFromUser(userService.save(user, false));
     }
 
-    @GetMapping("/id/{id}")
-    public Optional<User> findUserById(@PathVariable Long id) {
-        Optional<User> user = userService.findUserById(id);
-        if (user.isPresent())
-            return user;
-        else
+    @GetMapping("/me")
+    public ResponseEntity<UserNoPasswordDto> findUserById() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUserByUsername(auth.getName());
+
+        if (user != null){
+            UserNoPasswordDto simpleUser = new UserNoPasswordDto().getUserNoPasswordDtoFromUser(user);
+            return new ResponseEntity<>(simpleUser, HttpStatus.OK);
+        }else
             throw new UserNotFoundException("This user does not exist!");
     }
 
