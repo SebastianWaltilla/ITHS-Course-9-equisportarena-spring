@@ -38,6 +38,10 @@ public class EntryService {
         return entryRepository.findByUserIdAndContestId(userId, contestId);
     }
 
+    public Optional<Entry> findEntryBy(Long id) {
+        return entryRepository.findById(id);
+    }
+
     public void deleteEntry(Long id) {
         entryRepository.deleteById(id);
     }
