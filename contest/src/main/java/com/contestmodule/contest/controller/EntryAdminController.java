@@ -1,8 +1,12 @@
 package com.contestmodule.contest.controller;
 
+import com.contestmodule.contest.Exceptions.EntryNotFoundException;
 import com.contestmodule.contest.entity.Entry;
 import com.contestmodule.contest.service.ContestService;
 import com.contestmodule.contest.service.EntryService;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -10,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -17,13 +22,17 @@ import java.util.Optional;
 @RolesAllowed("ADMIN")
 public class EntryAdminController {
 
-    public EntryAdminController(EntryService entryService) {
-        this.entryService = entryService;
-    }
+
 
     Logger logger = LoggerFactory.getLogger(EntryService.class);
 
     private EntryService entryService;
+    private ObjectMapper objectMapper;
+
+    public EntryAdminController(EntryService entryService, ObjectMapper objectMapper) {
+        this.entryService = entryService;
+        this.objectMapper = objectMapper;
+    }
 
     @GetMapping("/find-all")
     public Iterable<Entry> findAllEntries() {
@@ -43,33 +52,19 @@ public class EntryAdminController {
         } return ResponseEntity.notFound().build();
     }
 
-    @PatchMapping("/update/{id}")
-    public ResponseEntity<Entry> updateEntry(@PathVariable("id") Long id, @RequestBody Entry updatedEntry) {
+    @PatchMapping("/update/{entryid}")
+    public ResponseEntity<Entry> updateEntry2(@Valid @PathVariable("entryid") Long id, @RequestBody Entry updatedEntry2) throws JsonProcessingException {
 
+        objectMapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_EMPTY);
         Optional<Entry> entryOptional = entryService.findEntryById(id);
 
         if (!entryOptional.isPresent()) {
-            return ResponseEntity.notFound().build();
+            throw new EntryNotFoundException("Entry with id: " + id + " not found");
+        } else {
+            Entry entry = entryOptional.get();
+            objectMapper.readerForUpdating(entry).readValue(objectMapper.writeValueAsString(updatedEntry2));
+            entryService.createEntry(entry);
+            return ResponseEntity.ok().build();
         }
-
-        Entry entry = entryOptional.get();
-
-        entry.getContest().removeEntry(entry);
-        updatedEntry.getContest().addEntry(entry);
-        entry.setHasPaid(updatedEntry.hasUserPaid());
-
-        if (updatedEntry.getVideolink() != null) {
-            entry.setVideolink(updatedEntry.getVideolink());
-        }
-        if (updatedEntry.getHorseName() != null) {
-            entry.setHorseName(updatedEntry.getHorseName());
-        }
-        if (updatedEntry.getUserComment() != null) {
-            entry.setUserComment(updatedEntry.getUserComment());
-        }
-
-        entryService.createEntry(entry);
-
-        return ResponseEntity.noContent().build();
     }
 }
