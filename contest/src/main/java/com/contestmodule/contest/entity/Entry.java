@@ -1,9 +1,9 @@
 package com.contestmodule.contest.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -17,8 +17,9 @@ public class Entry {
     @NotNull
     private Long userId;
 
-    @NotNull
+    @JsonBackReference
     @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name = "contest_id", nullable = false)
     private Contest contest;
 
     private String videolink;

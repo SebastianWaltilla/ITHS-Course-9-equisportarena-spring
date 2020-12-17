@@ -1,6 +1,8 @@
 package com.contestmodule.contest.entity;
 
 import com.contestmodule.contest.validator.ContestDateRange;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -37,10 +39,10 @@ public class Contest {
     private String winningAward;
     private String adminComment;
 
+    @JsonManagedReference
     @OneToMany(
             mappedBy = "contest",
-            cascade = CascadeType.ALL,
-            orphanRemoval = false)
+            cascade = CascadeType.ALL)
     Set<Entry> entries = new HashSet<>();
 
     public Contest() {
@@ -139,5 +141,22 @@ public class Contest {
     }
     public void setAdminComment(String adminComment) {
         this.adminComment = adminComment;
+    }
+
+    @Override
+    public String toString() {
+        return "Contest{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", maxParticipants=" + maxParticipants +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", entryFee=" + entryFee +
+                ", contestLevel='" + contestLevel + '\'' +
+                ", winningAward='" + winningAward + '\'' +
+                ", adminComment='" + adminComment + '\'' +
+                ", entries=" + entries +
+                '}';
     }
 }
