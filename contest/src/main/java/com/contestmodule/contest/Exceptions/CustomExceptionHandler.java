@@ -25,8 +25,8 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity(error, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(CurrentlyNoActiveContestsException.class)
-    public final ResponseEntity<Object> handleNoActiveContestsException(CurrentlyNoActiveContestsException ex, WebRequest request){
+    @ExceptionHandler(EmptyListException.class)
+    public final ResponseEntity<Object> handleNoActiveContestsException(EmptyListException ex, WebRequest request){
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
         ErrorResponse error = new ErrorResponse("No contests", details);
@@ -49,6 +49,16 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorResponse error = new ErrorResponse("User Does Not Exist", details);
         return new ResponseEntity(error, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(EntryNotFoundException.class)
+    public final ResponseEntity<Object> handleEntryNotFound(EntryNotFoundException ex, WebRequest request) {
+        List<String> details = new ArrayList<>();
+        details.add(ex.getLocalizedMessage());
+        ErrorResponse error = new ErrorResponse("Entry Does Not Exist", details);
+        return new ResponseEntity(error, HttpStatus.NOT_FOUND);
+    }
+
+
 
 
     @Override

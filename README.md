@@ -1,17 +1,16 @@
 # equisportarena-spring
 PROJEKTARBETE | Complex Java | JU19 | ITHS
 ____________________________________________________________________
-### NEW
-POST http://localhost:8080/user/create
+### NEW USER
+POST http://localhost:8080/user/register
 
 Content-Type: application/json
 
 {
-	"firstname": "alfred",
-	"lastname": "Svensson",
-	"address": "Stigen 1, 440 90, Göteborg",
-	"email": "brevlada@brev.se",
-	"password": "123"
+"firstName": "Sune",
+"lastName": "Rolfsson",
+"address": "administrationsvägen 1",
+"email": "admin@admin.com"
 }
 
 ____________________________________________________________________
@@ -27,10 +26,10 @@ Content-Type: application/json
 	"password": "123"
 }
 ___________________________________________________________________
-### FINDALL ( users ) 
+### FIND ALL ( users ) 
 GET http://localhost:8080/user/find-all
 
-Bearer-Token: needed
+Bearer-Token: needed with admin access
       Example: {
   "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJicmV2bGFkYUBicmV2LnNlIiwiZXhwIjoxNjA3OTczNDMyLCJpYXQiOjE2MDc5NTU0MzJ9.yvUGhUp-24q9P80hWDRi4ichYMkjE2mZfW9nMyfCfCW9GhA8gMRCyB0unvVqCS5AzxgcuV0WYfpDKN9U9fIw5g"
 }
@@ -44,7 +43,7 @@ Delete is possible after a user is authenticated, DELETE deletes the authenticat
 
 ____________________________________________________________________
 
-### FINDALL  ( contest )
+### FIND ALL  ( contest )
 GET http://localhost:8080/admin/contest/find-all
 
 Bearer-Token: needed with admin access
@@ -83,7 +82,7 @@ ___________________________________________________________________
 ### CREATE ENTRY
 Post http://localhost:8080/entry/create
 
-Bearer-Token: needed with admin access
+Bearer-Token: needed with user access
 Content-Type: application/json
 
 	{
@@ -93,5 +92,82 @@ Content-Type: application/json
 	"userComment": "This is me and my horse",
 	"horsename": "FlashGordon"
 	}
-	
 
+___________________________________________________________________
+
+### GET ACTIVE CONTESTS
+Get http://localhost:8080/contest/active
+
+Bearer-Token: needed with user access
+No body
+
+Response
+200 OK <br>
+[
+{
+"name": "First contest, active",
+"description": "demotävling",
+"startDate": "2020-12-16",
+"endDate": "2020-12-23",
+"entryFee": 10.00,
+"contestLevel": "enkel",
+"winningAward": "en kram",
+"placesLeft": true
+}
+]
+
+
+or <br> 
+200 OK <br>
+{
+"message": "No contests",
+"details": [
+"Currently no contests open."
+]
+}
+
+___________________________________________________________________
+
+### GET ACTIVE CONTEST BY ID
+Get http://localhost:8080/contest/id/{id}
+
+Bearer-Token: needed with user access
+No body
+
+Response
+200 OK <br>
+[
+{
+"name": "First contest, active",
+"description": "demotävling",
+"startDate": "2020-12-16",
+"endDate": "2020-12-23",
+"entryFee": 10.00,
+"contestLevel": "enkel",
+"winningAward": "en kram",
+"placesLeft": true
+}
+]
+
+or <br>
+404 not found
+
+___________________________________________________________________
+
+### GET MY INFO (USER)
+Get http://localhost:8080/user/me
+
+Bearer-Token: needed with user access
+No body
+
+Response
+200 OK <br>
+{
+"firstName": "Sune",
+"lastName": "Rolfsson",
+"address": "administrationsvägen 1",
+"email": "admin@admin.com"
+}
+
+or <br>
+404 User does not exist!

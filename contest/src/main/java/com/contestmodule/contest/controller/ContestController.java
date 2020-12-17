@@ -1,6 +1,6 @@
 package com.contestmodule.contest.controller;
 
-import com.contestmodule.contest.Exceptions.CurrentlyNoActiveContestsException;
+import com.contestmodule.contest.Exceptions.EmptyListException;
 import com.contestmodule.contest.dto.ContestInfoForUserDto;
 import com.contestmodule.contest.service.ContestService;
 import org.springframework.http.HttpStatus;
@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -35,7 +34,7 @@ public class ContestController {
         List<ContestInfoForUserDto> list = contestService.findAllContestsForUser();
 
         if (list.size() == 0) {
-            throw new CurrentlyNoActiveContestsException("Currently no contests open.");
+            throw new EmptyListException("Currently no contests open.");
         }
 
         return new ResponseEntity<>(list, HttpStatus.OK);

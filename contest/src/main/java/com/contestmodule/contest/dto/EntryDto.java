@@ -11,8 +11,7 @@ public class EntryDto {
     public EntryDto() {
     }
 
-    public EntryDto(Long userId, Long contestId, String videoLink, String userComment, String horsename) {
-        this.userId = userId;
+    public EntryDto(Long contestId, String videoLink, String userComment, String horsename) {
         this.contestId = contestId;
         this.videoLink = videoLink;
         this.userComment = userComment;

@@ -1,7 +1,5 @@
 package com.contestmodule.contest.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -27,7 +25,6 @@ public class User {
     @NotEmpty(message = "Email should not be empty")
     @Column(unique=true)
     @Email(message = "Email should be valid")
-    //TODO Throw detailed error instead of 500 when trying to create two entities with the same email
     private String email;
     @NotEmpty
     private String password;
@@ -56,6 +53,11 @@ public class User {
     }
 
     public User() {
+    }
+
+    @PrePersist
+    private void getCurrentDate() {
+        setRegisteredDate(LocalDate.now());
     }
 
     public Set<Role> getRoles() {
