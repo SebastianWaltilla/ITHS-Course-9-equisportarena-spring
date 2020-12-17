@@ -1,16 +1,13 @@
 package com.contestmodule.contest;
 
-import com.contestmodule.contest.dto.UserDto;
 import com.contestmodule.contest.entity.Contest;
 import com.contestmodule.contest.entity.Entry;
 import com.contestmodule.contest.entity.Role;
 import com.contestmodule.contest.entity.User;
-import com.contestmodule.contest.repository.RoleRepository;
 import com.contestmodule.contest.service.ContestService;
 import com.contestmodule.contest.service.EntryService;
 import com.contestmodule.contest.service.RoleService;
 import com.contestmodule.contest.service.UserService;
-import com.sun.xml.bind.v2.TODO;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
