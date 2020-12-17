@@ -26,7 +26,7 @@ public class Contest {
     @NotEmpty
     private String description;
     @Min(2)
-    private int maxParticipants;
+    private Integer maxParticipants;
     private LocalDate startDate;
     private LocalDate endDate;
     @NotNull
@@ -40,7 +40,7 @@ public class Contest {
     @OneToMany(
             mappedBy = "contest",
             cascade = CascadeType.ALL,
-            orphanRemoval = true)
+            orphanRemoval = false)
     Set<Entry> entries = new HashSet<>();
 
     public Contest() {
@@ -79,10 +79,10 @@ public class Contest {
         this.description = description;
     }
 
-    public int getMaxParticipants() {
+    public Integer getMaxParticipants() {
         return maxParticipants;
     }
-    public void setMaxParticipants(int maxParticipants) {
+    public void setMaxParticipants(Integer maxParticipants) {
         this.maxParticipants = maxParticipants;
     }
 
