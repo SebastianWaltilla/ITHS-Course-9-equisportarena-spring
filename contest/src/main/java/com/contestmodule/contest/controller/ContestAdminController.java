@@ -66,7 +66,7 @@ public class ContestAdminController {
             logger.info("createContest() was called through update-contest with contestId: " + contest.getId());
             logger.info("Contest" + contest.getName() + "was updated");
 
-            return ResponseEntity.noContent().build();
+            return new ResponseEntity<>(contest, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
