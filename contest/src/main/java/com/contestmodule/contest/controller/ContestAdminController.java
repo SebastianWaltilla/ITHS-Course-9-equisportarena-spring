@@ -1,16 +1,23 @@
 package com.contestmodule.contest.controller;
 
 import com.contestmodule.contest.entity.Contest;
+import com.contestmodule.contest.repository.ContestRepository;
 import com.contestmodule.contest.service.ContestService;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -20,6 +27,9 @@ import java.util.Optional;
 public class ContestAdminController {
 
     Logger logger = LoggerFactory.getLogger(ContestService.class);
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private ContestService contestService;
 
@@ -33,51 +43,32 @@ public class ContestAdminController {
     }
 
     @PostMapping("/create")                 //@Validation
-    public Contest createContest(@RequestBody  Contest contest) {
+    public Contest createContest(@RequestBody @Valid Contest contest) {
         logger.info("createContest() was called with contestname: " + contest.getName());
         return contestService.createContest(contest);
     }
 
-    @PatchMapping("/update-contest/{id}")
-    public ResponseEntity<Contest> updateContest(@Valid @PathVariable("id") Long id, @RequestBody Contest updateContest) {
+    @PatchMapping("/partial-update-contest/{id}")
+    public ResponseEntity<Contest> partialUpdateContest(@Valid @PathVariable("id") Long id, @RequestBody Contest updateContest) throws JsonProcessingException {
+        objectMapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
+        logger.info("Id: " + id);
 
         Optional<Contest> contestOptional = contestService.findContestByID(id);
-        if (!contestOptional.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        Contest contest = contestOptional.get();
-        if (updateContest.getName() != null) {
-            contest.setName(updateContest.getName());
-        }
-        if (updateContest.getDescription() != null) {
-            contest.setDescription(updateContest.getDescription());
-        }
-        if (updateContest.getMaxParticipants() >= 0) {
-            contest.setMaxParticipants(updateContest.getMaxParticipants());
-        }
-        if (updateContest.getStartDate() != null) {
-            contest.setStartDate(updateContest.getStartDate());
-        }
-        if (updateContest.getEndDate() != null) {
-            contest.setEndDate(updateContest.getEndDate());
-        }
-        if (updateContest.getEntryFee() != null) {
-            contest.setEntryFee(updateContest.getEntryFee());
-        }
-        if (updateContest.getContestLevel() != null) {
-            contest.setContestLevel(updateContest.getContestLevel());
-        }
-        if (updateContest.getWinningAward() != null) {
-            contest.setWinningAward(updateContest.getWinningAward());
-        }
-        if (updateContest.getAdminComment() != null) {
-            contest.setAdminComment(updateContest.getAdminComment());
-        }
 
-        contestService.createContest(contest);
-        logger.info("createContest() was called through update-contest with contestId: " + contest.getId());
-        logger.info("Contest" + contest.getName() + "was updated");
-        return ResponseEntity.noContent().build();
+        logger.info("Requestbody: " + updateContest.getId());
+
+        if(contestOptional.isPresent()){
+            var contest = contestOptional.get();
+            logger.info(contest.toString());
+            objectMapper.readerForUpdating(contest).readValue(objectMapper.writeValueAsString(updateContest));
+            contestService.updateContest(contest);
+
+            logger.info("createContest() was called through update-contest with contestId: " + contest.getId());
+            logger.info("Contest" + contest.getName() + "was updated");
+
+            return ResponseEntity.noContent().build();
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/delete/{id}")
