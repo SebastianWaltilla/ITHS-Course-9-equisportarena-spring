@@ -78,15 +78,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable()
                 .headers().frameOptions().disable().and()
                 // dont authenticate this particular request
-                .authorizeRequests()
-                .antMatchers("/authenticate").permitAll()
-                .antMatchers("/user/create").permitAll()
-                .antMatchers("/h2-console/**").permitAll()
-                .and()
+               // .authorizeRequests()
+               // .antMatchers("/authenticate").permitAll()
+               // .antMatchers("/user/create").permitAll()
+               // .antMatchers("/h2-console/**").permitAll()
+               // .and()
                 // all other requests need to be authenticated
-                .authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
+               // .authorizeRequests()
+               // .anyRequest().authenticated()
+               // .and()
                 // make sure we use stateless session; session won't be used to
                 // store user's state.
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
