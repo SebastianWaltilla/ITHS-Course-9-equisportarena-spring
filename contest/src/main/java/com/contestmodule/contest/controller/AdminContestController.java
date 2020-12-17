@@ -1,40 +1,42 @@
 package com.contestmodule.contest.controller;
 
+import com.contestmodule.contest.Exceptions.UserNotFoundException;
 import com.contestmodule.contest.entity.Contest;
-import com.contestmodule.contest.repository.ContestRepository;
 import com.contestmodule.contest.service.ContestService;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/admin/contest")
 @Validated
 @RolesAllowed("ADMIN")
-public class ContestAdminController {
+public class AdminContestController {
 
-    Logger logger = LoggerFactory.getLogger(ContestService.class);
+    Logger logger = LoggerFactory.getLogger(AdminContestController.class);
 
-    @Autowired
-    private ObjectMapper objectMapper;
 
-    private ContestService contestService;
+    private final ObjectMapper objectMapper;
 
-    public ContestAdminController(ContestService contestService) {
+    private final ContestService contestService;
+
+    public AdminContestController(ContestService contestService, ObjectMapper objectMapper) {
         this.contestService = contestService;
+        this.objectMapper = objectMapper;
     }
 
     @GetMapping("/find-all")
@@ -70,6 +72,45 @@ public class ContestAdminController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    /*
+    * References:
+    * https://stackoverflow.com/questions/52951336/error-in-json-result-for-one-to-many-mapping-in-spring-data-jpa
+    * https://www.baeldung.com/spring-rest-json-patch
+    * */
+
+    @PatchMapping(path = "/partial-update-contest-with-jsonpatch/{id}", consumes = "application/json-patch+json")
+    public ResponseEntity<Contest> partialUpdateContest(@PathVariable Long id, @RequestBody JsonPatch patch) {
+        try {
+
+            Contest contest = contestService.findContestByID(id).orElseThrow(() -> new UserNotFoundException("Contest not found"));
+            Contest contestPatched = applyPatchToContest(patch, contest);
+            logger.info("contestPatched.getName(): " + contestPatched.getName());
+            logger.info(contestPatched.toString());
+
+            contestService.updateContest(contestPatched);
+            return ResponseEntity.ok(contestPatched);
+        } catch (JsonPatchException | JsonProcessingException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+    private Contest applyPatchToContest(JsonPatch patch, Contest targetContest) throws JsonPatchException, JsonProcessingException {
+        JsonNode patched = patch.apply(objectMapper.convertValue(targetContest, JsonNode.class));
+        return objectMapper.treeToValue(patched, Contest.class);
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity deleteContest(@PathVariable Long id) {

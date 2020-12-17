@@ -3,15 +3,18 @@ package com.contestmodule.contest.service;
 import com.contestmodule.contest.dto.ContestInfoForUserDto;
 import com.contestmodule.contest.entity.Contest;
 import com.contestmodule.contest.repository.ContestRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class ContestService {
+
+    Logger logger = LoggerFactory.getLogger(ContestService.class);
 
     private ContestRepository contestRepository;
 
@@ -23,7 +26,7 @@ public class ContestService {
     }
 
     public Contest updateContest(Contest contest) {
-        return contestRepository.save(contest);
+       return contestRepository.save(contest);
     }
 
     public Iterable<Contest> findAllContests(){ return contestRepository.findAll();}
