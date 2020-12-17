@@ -37,6 +37,9 @@ public class EntryService {
     public Optional<Entry> findEntryByUserId(Long userId, Long contestId) {
         return entryRepository.findByUserIdAndContestId(userId, contestId);
     }
+    public Optional<Entry> findEntryByUserIdAndContestId(Long userId, Long contestId) {
+        return entryRepository.findByUserIdAndContestId(userId, contestId);
+    }
 
     public Optional<Entry> findEntryBy(Long id) {
         return entryRepository.findById(id);

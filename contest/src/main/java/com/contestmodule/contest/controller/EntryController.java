@@ -8,6 +8,9 @@ import com.contestmodule.contest.entity.Entry;
 import com.contestmodule.contest.service.ContestService;
 import com.contestmodule.contest.service.EntryService;
 import com.contestmodule.contest.service.UserService;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -28,12 +31,13 @@ public class EntryController {
     private EntryService entryService;
     private ContestService contestService;
     private UserService userService;
+    private ObjectMapper objectMapper;
 
-    public EntryController(EntryService entryService, ContestService contestService, UserService userService) {
+    public EntryController(EntryService entryService, ContestService contestService, UserService userService, ObjectMapper objectMapper) {
         this.entryService = entryService;
         this.contestService = contestService;
         this.userService = userService;
-
+        this.objectMapper = objectMapper;
     }
 
     @PostMapping("/create")
@@ -59,28 +63,25 @@ public class EntryController {
         }
     }
 
-    @PatchMapping("/update-entry")
-    public ResponseEntity<Entry> updateEntry(@RequestBody EntryDto updatedEntry) {
+    @PatchMapping("/update/{contestid}")
+    public ResponseEntity<Entry> updateEntry(@PathVariable("contestid") Long contestid, @RequestBody EntryDto updatedEntry) throws JsonProcessingException {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Long id = userService.getUserByUsername(auth.getName()).getId();
 
-        Optional<Entry> entryOptional = entryService.findEntryById(updatedEntry.getContestId());
+        objectMapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_EMPTY);
+        Optional<Entry> entryOptional = entryService.findEntryByUserIdAndContestId(id, contestid);
+
+        Entry newInformationEntry = updatedEntry.getEntryFromEntryDto(entryOptional.get().getContest());
+
         if (!entryOptional.isPresent()) {
-            throw new EntryNotFoundException("Entry with id: " + id + " not found");
+            throw new EntryNotFoundException("Entry not found");
         } else {
             Entry entry = entryOptional.get();
-            if (updatedEntry.getVideoLink() != null) {
-                entry.setVideolink(updatedEntry.getVideoLink());
-            }
-            if (updatedEntry.getHorsename() != null) {
-                entry.setHorseName(updatedEntry.getHorsename());
-            }
-            if (updatedEntry.getUserComment() != null) {
-                entry.setUserComment(updatedEntry.getUserComment());
-            }
+            objectMapper.readerForUpdating(entry).readValue(objectMapper.writeValueAsString(newInformationEntry));
             entryService.createEntry(entry);
             return ResponseEntity.ok().build();
         }
     }
+
 }
