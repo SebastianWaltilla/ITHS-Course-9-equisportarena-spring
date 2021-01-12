@@ -9,9 +9,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -39,17 +41,20 @@ public class AdminContestController {
         this.objectMapper = objectMapper;
     }
 
+    @ApiOperation(value = "List of all contests.", response = Iterable.class)
     @GetMapping("/find-all")
     public Iterable<Contest> findAllContests() {
         return contestService.findAllContests();
     }
 
+    @ApiOperation(value = "Create new contest", response = Contest.class)
     @PostMapping("/create")                 //@Validation
     public Contest createContest(@RequestBody @Valid Contest contest) {
         logger.info("createContest() was called with contestname: " + contest.getName());
         return contestService.createContest(contest);
     }
 
+    @ApiOperation(value = "Partial update of contest.", response = Contest.class)
     @PatchMapping("/partial-update-contest/{id}")
     public ResponseEntity<Contest> partialUpdateContest(@Valid @PathVariable("id") Long id, @RequestBody Contest updateContest) throws JsonProcessingException {
         objectMapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
@@ -78,7 +83,7 @@ public class AdminContestController {
     * https://stackoverflow.com/questions/52951336/error-in-json-result-for-one-to-many-mapping-in-spring-data-jpa
     * https://www.baeldung.com/spring-rest-json-patch
     * */
-
+    @ApiOperation(value = "Partial update of contest.", response = Contest.class)
     @PatchMapping(path = "/partial-update-contest-with-jsonpatch/{id}", consumes = "application/json-patch+json")
     public ResponseEntity<Contest> partialUpdateContest(@PathVariable Long id, @RequestBody JsonPatch patch) {
         try {
@@ -111,7 +116,11 @@ public class AdminContestController {
 
 
 
-
+    @ApiOperation(value = "Delete Contest by contest id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "{id} was deleted"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 404, message = "Not found") })
     @DeleteMapping("/delete/{id}")
     public ResponseEntity deleteContest(@PathVariable Long id) {
         if (contestService.findContestByID(id).isPresent()) {
