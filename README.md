@@ -1,9 +1,12 @@
 # equisportarena-spring
 PROJEKTARBETE | Complex Java | JU19 | ITHS
+
+http://localhost:8080/swagger-ui.html
 ____________________________________________________________________
 ### NEW USER
 POST http://localhost:8080/user/register
 
+No authorization <br>
 Content-Type: application/json
 
 {
@@ -18,7 +21,7 @@ ____________________________________________________________________
 ### AUTHENTICATE ( get token )
 POST http://localhost:8080/authenticate
 
-
+No authorization <br>
 Content-Type: application/json
 
 {
@@ -39,14 +42,14 @@ ____________________________________________________________________
 
 DELETE http://localhost:8080/user/delete
 
-Delete is possible after a user is authenticated, DELETE deletes the authenticated user by its token.
+Delete is possible after a user is authenticated, deletes the authenticated user by its token.
 
 ____________________________________________________________________
 
 ### FIND ALL  ( contest )
 GET http://localhost:8080/admin/contest/find-all
 
-Bearer-Token: needed with admin access
+Bearer-Token: needed with admin access <br>
 Content-Type: application/json
     
     	{
@@ -63,7 +66,7 @@ ___________________________________________________________________
 ### CREATE CONTEST
 Post http://localhost:8080/admin/contest/create
 
-Bearer-Token: needed with admin access
+Bearer-Token: needed with admin access <br>
 Content-Type: application/json
 
 	{
@@ -82,7 +85,7 @@ ___________________________________________________________________
 ### CREATE ENTRY
 Post http://localhost:8080/entry/create
 
-Bearer-Token: needed with user access
+Bearer-Token: needed with user access <br>
 Content-Type: application/json
 
 	{
@@ -95,10 +98,10 @@ Content-Type: application/json
 
 ___________________________________________________________________
 
-### GET ACTIVE CONTESTS
+### GET ALL ACTIVE CONTESTS
 Get http://localhost:8080/contest/active
 
-Bearer-Token: needed with user access
+Bearer-Token: needed with user access <br>
 No body
 
 Response
@@ -131,7 +134,7 @@ ___________________________________________________________________
 ### GET ACTIVE CONTEST BY ID
 Get http://localhost:8080/contest/id/{id}
 
-Bearer-Token: needed with user access
+Bearer-Token: needed with user access <br>
 No body
 
 Response
@@ -157,7 +160,7 @@ ___________________________________________________________________
 ### GET MY INFO (USER)
 Get http://localhost:8080/user/me
 
-Bearer-Token: needed with user access
+Bearer-Token: needed with user access <br>
 No body
 
 Response
@@ -171,3 +174,56 @@ Response
 
 or <br>
 404 User does not exist!
+
+___________________________________________________________________
+
+### GET ALL ENTRIES BY CONTEST ID
+Get http://localhost:8080/admin/entry/find-all-by-contest-id/1
+
+Bearer-Token: needed with admin access <br>
+No body
+
+Response
+200 OK <br>
+[
+{
+"id": 1,
+"userId": 1,
+"videolink": null,
+"userComment": "usercomment",
+"score": null,
+"adminComment": null,
+"submissionDate": "2021-01-12",
+"horseName": "Rolf"
+}
+]
+
+or
+
+404 not found
+
+___________________________________________________________________
+
+### DELETE CONTEST BY ID
+
+DELETE http://localhost:8080/admin/contest/delete/{id}
+
+Bearer-Token: needed with admin access <br>
+No body
+
+Response <br>
+200 OK, "{id} was deleted"
+
+___________________________________________________________________
+
+### DELETE ENTRY BY ID
+
+DELETE http://localhost:8080/admin/entry/delete/{id}
+
+Bearer-Token: needed with admin access <br>
+No body
+
+Response <br>
+200 OK, "{id} was deleted"
+
+___________________________________________________________________
