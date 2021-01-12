@@ -20,16 +20,16 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/admin/entry")
 @RolesAllowed("ADMIN")
-public class EntryAdminController {
+public class AdminEntryController {
 
 
 
-    Logger logger = LoggerFactory.getLogger(EntryService.class);
+    Logger logger = LoggerFactory.getLogger(AdminEntryController.class);
 
     private EntryService entryService;
     private ObjectMapper objectMapper;
 
-    public EntryAdminController(EntryService entryService, ObjectMapper objectMapper) {
+    public AdminEntryController(EntryService entryService, ObjectMapper objectMapper) {
         this.entryService = entryService;
         this.objectMapper = objectMapper;
     }
@@ -58,9 +58,10 @@ public class EntryAdminController {
         objectMapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_EMPTY);
         Optional<Entry> entryOptional = entryService.findEntryById(id);
 
-        if (!entryOptional.isPresent()) {
+        if (entryOptional.isEmpty()) {
             throw new EntryNotFoundException("Entry with id: " + id + " not found");
         } else {
+            logger.info("Entry with id " + id + " updated by admin.");
             Entry entry = entryOptional.get();
             objectMapper.readerForUpdating(entry).readValue(objectMapper.writeValueAsString(updatedEntry2));
             entryService.createEntry(entry);
