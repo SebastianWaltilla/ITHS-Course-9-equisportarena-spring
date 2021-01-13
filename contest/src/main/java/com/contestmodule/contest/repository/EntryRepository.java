@@ -1,5 +1,6 @@
 package com.contestmodule.contest.repository;
 
+import com.contestmodule.contest.dto.AdminEntryDto;
 import com.contestmodule.contest.dto.ContestInfoForUserDto;
 import com.contestmodule.contest.entity.Contest;
 import com.contestmodule.contest.entity.Entry;
@@ -14,7 +15,18 @@ import java.util.Optional;
 
 public interface EntryRepository extends CrudRepository <Entry, Long> {
 
-    Iterable<Entry> findAllByContestId(Long contestId);
+    @Query(value = "Select new com.contestmodule.contest.dto.AdminEntryDto(" +
+            "e.userId, " +
+            "e.contest.id, " +
+            "e.videolink, " +
+            "e.userComment, " +
+            "e.horseName, " +
+            "e.adminComment, " +
+            "e.hasPaid, " +
+            "e.score, " +
+            "e.submissionDate) " +
+            "from Entry e where e.contest.id = :contestId")
+    Iterable<AdminEntryDto> findAllByContestId(Long contestId);
 
     @Query(value = "SELECT e from Entry e where e.userId = :userId AND e.contest.id = :contestId")
     Optional<Entry> findByUserIdAndContestId(Long userId, Long contestId);

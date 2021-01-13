@@ -2,6 +2,8 @@ package com.contestmodule.contest.entity;
 
 import com.contestmodule.contest.validator.ContestDateRange;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -39,7 +41,7 @@ public class Contest {
     private String winningAward;
     private String adminComment;
 
-    @JsonManagedReference
+    @JsonBackReference //is the back part of reference – it will be omitted from serialization. To avoid infinite recursion.
     @OneToMany(
             mappedBy = "contest",
             cascade = CascadeType.ALL)

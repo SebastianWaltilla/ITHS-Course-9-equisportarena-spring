@@ -1,6 +1,7 @@
 package com.contestmodule.contest.service;
 
 import com.contestmodule.contest.Exceptions.UserAlreadyInContestException;
+import com.contestmodule.contest.dto.AdminEntryDto;
 import com.contestmodule.contest.entity.Entry;
 import com.contestmodule.contest.entity.User;
 import com.contestmodule.contest.repository.EntryRepository;
@@ -27,7 +28,7 @@ public class EntryService {
         return entryRepository.findAll();
     }
 
-    public Iterable<Entry> findAllEntriesByContestId(Long id) {
+    public Iterable<AdminEntryDto> findAllEntriesByContestId(Long id) {
         return entryRepository.findAllByContestId(id);
     }
 

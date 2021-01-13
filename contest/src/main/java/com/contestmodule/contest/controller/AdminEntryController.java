@@ -1,6 +1,7 @@
 package com.contestmodule.contest.controller;
 
 import com.contestmodule.contest.Exceptions.EntryNotFoundException;
+import com.contestmodule.contest.dto.AdminEntryDto;
 import com.contestmodule.contest.entity.Entry;
 import com.contestmodule.contest.service.ContestService;
 import com.contestmodule.contest.service.EntryService;
@@ -40,7 +41,7 @@ public class AdminEntryController {
     }
 
     @GetMapping("/find-all-by-contest-id/{id}")
-    public Iterable<Entry> findAllByContestId(@PathVariable Long id) {
+    public Iterable<AdminEntryDto> findAllByContestId(@PathVariable Long id) {
         return entryService.findAllEntriesByContestId(id);
     }
 
