@@ -80,8 +80,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // dont authenticate this particular request
                // .authorizeRequests()
                // .antMatchers("/authenticate").permitAll()
-               // .antMatchers("/user/create").permitAll()
-               // .antMatchers("/h2-console/**").permitAll()
+                //               // .antMatchers("/user/create").permitAll()
+                //               // .antMatchers("/h2-console/**").permitAll()
                // .and()
                 // all other requests need to be authenticated
                // .authorizeRequests()
