@@ -21,7 +21,7 @@ import java.util.*;
 
 
 @Service
-public class UserService{
+public class UserService {
 
     private UserRepository userRepository;
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -59,16 +59,20 @@ public class UserService{
     }
 
     public User save(User user, boolean isAdmin) {
-        logger.info(user.getPassword() + " :USERSERVICE SAVE() user.getPassword()");
-        logger.info(user.getEmail() + " :USERSERVICE SAVE() user.getEmail()");
-        logger.info(user.getFirstname() + " :USERSERVICE SAVE() user.getFirstname()");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        logger.info("ROLESERVICE.FINDROLEBYNAME(\"USER\"): " + roleService.findRoleByName("USER").getName());
-        logger.info("ROLESERVICE: " + roleService);
 
         if (isAdmin)
             user.getRoles().add(roleService.findRoleByName("ADMIN"));
         user.getRoles().add(roleService.findRoleByName("USER"));
         return userRepository.save(user);
     }
+
+    public User saveWithoutEncryptingPassword(User user, boolean isAdmin) {
+        if (isAdmin)
+            user.getRoles().add(roleService.findRoleByName("ADMIN"));
+        user.getRoles().add(roleService.findRoleByName("USER"));
+        return userRepository.save(user);
+    }
+
+
 }
