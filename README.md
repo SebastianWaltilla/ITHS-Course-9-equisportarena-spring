@@ -1,6 +1,16 @@
 # equisportarena-spring
 PROJEKTARBETE | Complex Java | JU19 | ITHS
 
+To run project locally: <br>
+using maven: <br>
+cd contest <br>
+mvn spring-boot:run <br>
+
+with jar command: <br>
+cd contest <br>
+java -jar target/contest-0.0.1-SNAPSHOT.jar
+
+Swagger ui to view endpoint info go to: <br>
 http://localhost:8080/swagger-ui.html
 ____________________________________________________________________
 ### NEW USER
