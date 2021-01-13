@@ -196,15 +196,17 @@ No body
 Response
 200 OK <br>
 [
+[
 {
-"id": 1,
 "userId": 1,
-"videolink": null,
+"contestId": 1,
+"videoLink": null,
 "userComment": "usercomment",
-"score": null,
+"horsename": "Rolf",
 "adminComment": null,
-"submissionDate": "2021-01-12",
-"horseName": "Rolf"
+"hasPaid": false,
+"score": null,
+"submissionDate": "2021-01-13"
 }
 ]
 
