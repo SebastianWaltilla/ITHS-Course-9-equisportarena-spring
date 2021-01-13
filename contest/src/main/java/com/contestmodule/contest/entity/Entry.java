@@ -1,6 +1,7 @@
 package com.contestmodule.contest.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -17,7 +18,7 @@ public class Entry {
     @NotNull
     private Long userId;
 
-    @JsonBackReference
+    @JsonManagedReference //is the forward part of reference – the one that gets serialized normally. See @JsonBackReference in Entry on field contest. To avoid infinite recursion.
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "contest_id", nullable = false)
     private Contest contest;
