@@ -33,7 +33,7 @@ Content-Type: application/json
         "lastName": "Rolfsson",
         "address": "administrationsvägen 1",
         "email": "admin@admin.com"
-	"password": "123"
+		"password": "123"
     }
 
 ____________________________________________________________________
