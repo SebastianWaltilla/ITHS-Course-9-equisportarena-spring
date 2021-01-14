@@ -2,6 +2,7 @@ package com.contestmodule.contest.emailhandler;
 
 import com.contestmodule.contest.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +17,11 @@ import java.util.UUID;
 @Component
 public class RegistrationListener implements ApplicationListener<OnRegistrationCompleteEvent> {
 
+    @Value("${email.secret}")
+    private String email;
 
+    @Value("${email.password.secret}")
+    private String password;
 
     @Autowired
     private VerificationService service;
@@ -50,12 +55,13 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 
     @Bean
     public JavaMailSender getJavaMailSender() {
+
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
 
-        mailSender.setUsername("digitalarenae@gmail.com");
-        mailSender.setPassword("java19forthewin");
+        mailSender.setUsername(email);
+        mailSender.setPassword(password);
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
