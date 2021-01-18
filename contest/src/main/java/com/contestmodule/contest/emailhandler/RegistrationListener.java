@@ -38,7 +38,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
     }
 
     @Async
-    private void confirmRegistration(OnRegistrationCompleteEvent event) {
+    void confirmRegistration(OnRegistrationCompleteEvent event) {
         User user = event.getUser();
         String token = UUID.randomUUID().toString();
         service.createVerificationTokenForUser(user, token);
