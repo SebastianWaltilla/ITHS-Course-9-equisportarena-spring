@@ -9,9 +9,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -28,7 +31,6 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
     private VerificationService service;
 
 
-
     @Autowired
     private JavaMailSender mailSender;
 
@@ -39,20 +41,33 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 
     @Async
     void confirmRegistration(OnRegistrationCompleteEvent event) {
+
         User user = event.getUser();
         String token = UUID.randomUUID().toString();
         service.createVerificationTokenForUser(user, token);
 
-        String recipientAddress = user.getEmail();
-        String subject = "Registration Confirmation";
         String confirmationUrl
-                = event.getAppUrl() + "/registrationconfirm?token=" + token;
+                = "http://localhost:8080" + "/registrationconfirm?token=" + token;
 
-        SimpleMailMessage email = new SimpleMailMessage();
-        email.setTo(recipientAddress);
-        email.setSubject(subject);
-        email.setText("\r\n" + "http://localhost:8080" + confirmationUrl);
-        mailSender.send(email);
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        try {
+
+            String message =
+                    "<html>\n<h3>Welcome To Equisport Digital Arena</h3><br>" +
+                    "<a href="+ confirmationUrl+ ">Click here to verify email.</a>";
+
+            mimeMessage.setSubject("Welcome!", "UTF-8");
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            helper.setFrom(email);
+            helper.setTo(user.getEmail());
+            helper.setText(message, true);
+            mailSender.send(mimeMessage);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 
     @Bean
