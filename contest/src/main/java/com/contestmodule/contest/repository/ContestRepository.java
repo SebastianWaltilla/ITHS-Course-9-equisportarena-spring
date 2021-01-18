@@ -1,6 +1,7 @@
 package com.contestmodule.contest.repository;
 
 import com.contestmodule.contest.dto.ContestInfoForUserDto;
+import com.contestmodule.contest.dto.ContestWithEntrySummationDto;
 import com.contestmodule.contest.entity.Contest;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -37,4 +38,19 @@ public interface ContestRepository extends CrudRepository <Contest, Long> {
             "(c.entries.size < c.maxParticipants))" +
             "FROM Contest c where c.startDate <= :today and c.endDate >= :today and c.id = :id")
     Optional<ContestInfoForUserDto> findContestInfoForUserById(Long id, LocalDate today);
+
+    @Query(value = "SELECT new com.contestmodule.contest.dto.ContestWithEntrySummationDto(" +
+            "c.id," +
+            "c.name, " +
+            "c.description, " +
+            "c.maxParticipants, " +
+            "c.startDate, " +
+            "c.endDate, " +
+            "c.entryFee, " +
+            "c.contestLevel, " +
+            "c.winningAward, " +
+            "c.adminComment," +
+            "c.entries.size)" +
+            " FROM Contest c WHERE c.id = :id")
+    Optional<ContestWithEntrySummationDto> findContestWithEntrySummationDto(Long id);
 }

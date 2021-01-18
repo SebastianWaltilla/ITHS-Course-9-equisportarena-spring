@@ -1,6 +1,7 @@
 package com.contestmodule.contest.service;
 
 import com.contestmodule.contest.dto.ContestInfoForUserDto;
+import com.contestmodule.contest.dto.ContestWithEntrySummationDto;
 import com.contestmodule.contest.entity.Contest;
 import com.contestmodule.contest.repository.ContestRepository;
 import org.slf4j.Logger;
@@ -47,5 +48,9 @@ public class ContestService {
 
     public Optional<ContestInfoForUserDto> findContestInfoForUserByID(Long id) {
         return contestRepository.findContestInfoForUserById(id, LocalDate.now());
+    }
+
+    public Optional<ContestWithEntrySummationDto> findContestWithEntrySummationById(Long id) {
+        return contestRepository.findContestWithEntrySummationDto(id);
     }
 }

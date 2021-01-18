@@ -1,6 +1,7 @@
 package com.contestmodule.contest.controller;
 
 import com.contestmodule.contest.Exceptions.UserNotFoundException;
+import com.contestmodule.contest.dto.ContestWithEntrySummationDto;
 import com.contestmodule.contest.entity.Contest;
 import com.contestmodule.contest.service.ContestService;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -46,6 +47,18 @@ public class AdminContestController {
     public Iterable<Contest> findAllContests() {
         return contestService.findAllContests();
     }
+
+    @GetMapping("/id/{id}")
+    public ResponseEntity<ContestWithEntrySummationDto> findContestInfoForAdminByContestId(@PathVariable("id") Long id){
+        var contest = contestService.findContestWithEntrySummationById(id);
+        return contest.map(contestWithEntrySummationDto -> new ResponseEntity<>(contestWithEntrySummationDto, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
+        /*return contestService
+                .findContestWithEntrySummationById(id)
+                .map(ResponseEntity::ok)
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));*/
+    }
+
 
     @ApiOperation(value = "Create new contest", response = Contest.class)
     @PostMapping("/create")                 //@Validation
