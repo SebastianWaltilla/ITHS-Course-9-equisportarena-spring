@@ -2,6 +2,8 @@ package com.contestmodule.contest.service;
 
 import com.contestmodule.contest.Exceptions.UserAlreadyInContestException;
 import com.contestmodule.contest.dto.AdminEntryDto;
+import com.contestmodule.contest.dto.ContestInfoForUserDto;
+import com.contestmodule.contest.dto.EntryWithContestNameDto;
 import com.contestmodule.contest.entity.Entry;
 import com.contestmodule.contest.entity.User;
 import com.contestmodule.contest.repository.EntryRepository;
@@ -48,5 +50,9 @@ public class EntryService {
 
     public void deleteEntry(Long id) {
         entryRepository.deleteById(id);
+    }
+
+    public Iterable<EntryWithContestNameDto> findAllEntriesByUserId(Long userId) {
+        return entryRepository.findEntriesByUserId(userId);
     }
 }

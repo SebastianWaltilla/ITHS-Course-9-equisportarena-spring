@@ -2,7 +2,10 @@ package com.contestmodule.contest.controller;
 
 import com.contestmodule.contest.Exceptions.EntryNotFoundException;
 import com.contestmodule.contest.Exceptions.UserAlreadyInContestException;
+import com.contestmodule.contest.Exceptions.UserNotFoundException;
+import com.contestmodule.contest.dto.ContestInfoForUserDto;
 import com.contestmodule.contest.dto.EntryDto;
+import com.contestmodule.contest.dto.EntryWithContestNameDto;
 import com.contestmodule.contest.entity.Contest;
 import com.contestmodule.contest.entity.Entry;
 import com.contestmodule.contest.service.ContestService;
@@ -19,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.RolesAllowed;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -82,6 +86,15 @@ public class EntryController {
             entryService.createEntry(entry);
             return ResponseEntity.ok().build();
         }
+    }
+
+    @GetMapping("/my-entries")
+    public Iterable<EntryWithContestNameDto> getMyContests(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Long userId = userService.getUserByUsername(auth.getName()).getId();
+
+        Iterable<EntryWithContestNameDto> contestList = entryService.findAllEntriesByUserId(userId);
+        return contestList;
     }
 
 }
