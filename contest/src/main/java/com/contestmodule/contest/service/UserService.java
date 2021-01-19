@@ -1,22 +1,14 @@
 package com.contestmodule.contest.service;
 
 
-import com.contestmodule.contest.controller.UserController;
-import com.contestmodule.contest.dto.UserDto;
-import com.contestmodule.contest.entity.Role;
+import com.contestmodule.contest.dto.UserInfoForAdminDto;
 import com.contestmodule.contest.entity.User;
-import com.contestmodule.contest.repository.RoleRepository;
 import com.contestmodule.contest.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.*;
 
 
@@ -38,8 +30,8 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public List<User> findAllUsers() {
-        return userRepository.findAll();
+    public List<UserInfoForAdminDto> findAllUsersAsUserInfoForAdminDto() {
+        return userRepository.findAllUsersAsInfoForAdminDto();
     }
 
     public void deleteUser(String userName) {
