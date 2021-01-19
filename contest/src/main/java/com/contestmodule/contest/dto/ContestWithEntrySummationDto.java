@@ -1,5 +1,7 @@
 package com.contestmodule.contest.dto;
 
+import com.contestmodule.contest.entity.Contest;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -45,6 +47,21 @@ public class ContestWithEntrySummationDto {
         this.winningAward = winningAward;
         this.adminComment = adminComment;
         this.numberOfRegistered = numberOfRegistered;
+    }
+
+    public ContestWithEntrySummationDto getContestWithEntrySummationDtoFromContest(Contest contest){
+        this.setId(contest.getId());
+        this.setName(contest.getName());
+        this.setDescription(contest.getDescription());
+        this.setMaxParticipants(contest.getMaxParticipants());
+        this.setStartDate(contest.getStartDate());
+        this.setEndDate(contest.getEndDate());
+        this.setEntryFee(contest.getEntryFee());
+        this.setContestLevel(contest.getContestLevel());
+        this.setWinningAward(contest.getWinningAward());
+        this.setAdminComment(contest.getAdminComment());
+        this.setNumberOfRegistered(contest.getEntries().size());
+        return this;
     }
 
     public Long getId() {

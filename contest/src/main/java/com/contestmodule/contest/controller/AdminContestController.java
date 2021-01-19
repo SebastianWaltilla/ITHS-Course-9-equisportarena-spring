@@ -64,9 +64,9 @@ public class AdminContestController {
         return contestService.createContest(contest);
     }
 
-    @ApiOperation(value = "Partial update of contest.", response = Contest.class)
+    @ApiOperation(value = "Partial update of contest by submitting values to update.", response = Contest.class)
     @PatchMapping("/partial-update-contest/{id}")
-    public ResponseEntity<Contest> partialUpdateContest(@Valid @PathVariable("id") Long id, @RequestBody Contest updateContest) throws JsonProcessingException {
+    public ResponseEntity<ContestWithEntrySummationDto> partialUpdateContest(@Valid @PathVariable("id") Long id, @RequestBody Contest updateContest) throws JsonProcessingException {
         objectMapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
         logger.info("Id: " + id);
 
@@ -83,7 +83,7 @@ public class AdminContestController {
             logger.info("createContest() was called through update-contest with contestId: " + contest.getId());
             logger.info("Contest" + contest.getName() + "was updated");
 
-            return new ResponseEntity<>(contest, HttpStatus.OK);
+            return new ResponseEntity<>(new ContestWithEntrySummationDto().getContestWithEntrySummationDtoFromContest(contest), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -93,18 +93,16 @@ public class AdminContestController {
     * https://stackoverflow.com/questions/52951336/error-in-json-result-for-one-to-many-mapping-in-spring-data-jpa
     * https://www.baeldung.com/spring-rest-json-patch
     * */
-    @ApiOperation(value = "Partial update of contest.", response = Contest.class)
+    @ApiOperation(value = "Partial update of contest with Json Patch operations.", response = Contest.class)
     @PatchMapping(path = "/partial-update-contest-with-jsonpatch/{id}", consumes = "application/json-patch+json")
-    public ResponseEntity<Contest> partialUpdateContest(@PathVariable Long id, @RequestBody JsonPatch patch) {
+    public ResponseEntity<ContestWithEntrySummationDto> partialUpdateContest(@PathVariable Long id, @RequestBody JsonPatch patch) {
         try {
 
             Contest contest = contestService.findContestByID(id).orElseThrow(() -> new UserNotFoundException("Contest not found"));
             Contest contestPatched = applyPatchToContest(patch, contest);
-            logger.info("contestPatched.getName(): " + contestPatched.getName());
-            logger.info(contestPatched.toString());
 
             contestService.updateContest(contestPatched);
-            return ResponseEntity.ok(contestPatched);
+            return ResponseEntity.ok(new ContestWithEntrySummationDto().getContestWithEntrySummationDtoFromContest(contestPatched));
         } catch (JsonPatchException | JsonProcessingException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         } catch (UserNotFoundException e) {

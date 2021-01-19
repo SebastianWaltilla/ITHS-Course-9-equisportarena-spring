@@ -18,7 +18,7 @@ public class Entry {
     @NotNull
     private Long userId;
 
-    @JsonManagedReference //is the forward part of reference – the one that gets serialized normally. See @JsonBackReference in Entry on field contest. To avoid infinite recursion.
+    @JsonBackReference //is the back part of reference – it will be omitted from serialization. To avoid infinite recursion.
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "contest_id", nullable = false)
     private Contest contest;

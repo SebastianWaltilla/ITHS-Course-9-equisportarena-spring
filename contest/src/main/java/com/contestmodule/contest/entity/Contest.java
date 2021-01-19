@@ -41,7 +41,8 @@ public class Contest {
     private String winningAward;
     private String adminComment;
 
-    @JsonBackReference //is the back part of reference – it will be omitted from serialization. To avoid infinite recursion.
+    @JsonManagedReference //is the forward part of reference – the one that gets serialized normally. See @JsonBackReference in Entry on field contest. To avoid infinite recursion.
+
     @OneToMany(
             mappedBy = "contest",
             cascade = CascadeType.ALL)
