@@ -5,9 +5,9 @@ import com.contestmodule.contest.jwt.JwtRequest;
 import com.contestmodule.contest.jwt.JwtResponse;
 import com.contestmodule.contest.jwt.JwtTokenUtil;
 import com.contestmodule.contest.jwt.JwtUserDetailsService;
+import com.contestmodule.contest.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -29,14 +29,23 @@ public class JwtAuthenticationController {
 
     Logger logger = LoggerFactory.getLogger(JwtAuthenticationController.class);
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private final JwtTokenUtil jwtTokenUtil;
 
-    @Autowired
-    private JwtUserDetailsService userDetailsService;
+    private final JwtUserDetailsService userDetailsService;
+
+    private final UserService userService;
+
+    public JwtAuthenticationController(AuthenticationManager authenticationManager,
+                                       JwtTokenUtil jwtTokenUtil,
+                                       JwtUserDetailsService userDetailsService,
+                                       UserService userService){
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.userDetailsService = userDetailsService;
+        this.userService = userService;
+    }
 
     @PermitAll
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
@@ -46,7 +55,7 @@ public class JwtAuthenticationController {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
         final String token = jwtTokenUtil.generateToken(userDetails);
-
+        userService.updateLastLoggedInByUserName(authenticationRequest.getUsername());
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
