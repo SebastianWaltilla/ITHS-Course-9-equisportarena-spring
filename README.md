@@ -255,3 +255,71 @@ Response <br>
 200 OK, "{id} was deleted"
 
 ___________________________________________________________________
+
+### PARTIAL UPDATE OF CONTEST (version 1)
+                                                                                           
+PATCH http://localhost:8080/admin/contest/partial-update-contest-with-jsonpatch/{contestId}
+
+Bearer-Token: needed with admin access <br>
+Content-Type: application/json-patch+json
+
+Body:
+
+      [
+        {
+		    "op": "replace",
+		    "path": "/name",
+		    "value": "new name"
+        }
+      ]
+
+Response <br>
+200 OK
+
+      {
+            "id": 1,
+            "name": "new name",
+            "description": "demotävling",
+            "maxParticipants": 10,
+            "startDate": "2021-01-19",
+            "endDate": "2021-01-26",
+            "entryFee": 1E+1,
+            "contestLevel": "enkel",
+            "winningAward": "en kram",
+            "adminComment": "adminkommentar",
+            "numberOfRegistered": 2
+      }
+
+___________________________________________________________________
+
+### PARTIAL UPDATE OF CONTEST (version 2)
+
+PATCH http://localhost:8080/admin/contest/partial-update-contest/{contestId}
+
+Bearer-Token: needed with admin access <br>
+Content-Type: application/json
+
+Body example:
+
+      {
+	        "maxParticipants":10,
+	        "name":"new name",
+	        "description":"updated description"
+      }
+
+Response <br>
+200 OK
+
+      {
+            "id": 1,
+            "name": "new name",
+            "description": "updated description",
+            "maxParticipants": 10,
+            "startDate": "2021-01-19",
+            "endDate": "2021-01-26",
+            "entryFee": 1E+1,
+            "contestLevel": "enkel",
+            "winningAward": "en kram",
+            "adminComment": "adminkommentar",
+            "numberOfRegistered": 1
+      }
