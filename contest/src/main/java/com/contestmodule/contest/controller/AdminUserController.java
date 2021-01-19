@@ -3,10 +3,10 @@ package com.contestmodule.contest.controller;
 import com.contestmodule.contest.Exceptions.EmptyListException;
 import com.contestmodule.contest.Exceptions.UserAlreadyExistsException;
 import com.contestmodule.contest.Exceptions.UserNotFoundException;
+import com.contestmodule.contest.dto.UserInfoForAdminDto;
 import com.contestmodule.contest.dto.UserNoPasswordDto;
 import com.contestmodule.contest.entity.User;
 import com.contestmodule.contest.service.UserService;
-import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("admin/user")
@@ -34,8 +33,8 @@ public class AdminUserController {
     }
 
     @GetMapping("/find-all")
-    public ResponseEntity<List<User>> findAllUsers() {
-        List<User> users = userService.findAllUsers();
+    public ResponseEntity<List<UserInfoForAdminDto>> findAllUsers() {
+        List<UserInfoForAdminDto> users = userService.findAllUsersAsUserInfoForAdminDto();
 
         if (users.size() == 0)
             throw new EmptyListException("No users found.");
