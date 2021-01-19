@@ -48,20 +48,17 @@ public class AdminContestController {
         return contestService.findAllContests();
     }
 
+    @ApiOperation(value = "Information about contest by id.", response = Contest.class)
     @GetMapping("/id/{id}")
     public ResponseEntity<ContestWithEntrySummationDto> findContestInfoForAdminByContestId(@PathVariable("id") Long id){
         var contest = contestService.findContestWithEntrySummationById(id);
         return contest.map(contestWithEntrySummationDto -> new ResponseEntity<>(contestWithEntrySummationDto, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
 
-        /*return contestService
-                .findContestWithEntrySummationById(id)
-                .map(ResponseEntity::ok)
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));*/
     }
 
 
     @ApiOperation(value = "Create new contest", response = Contest.class)
-    @PostMapping("/create")                 //@Validation
+    @PostMapping("/create")
     public Contest createContest(@RequestBody @Valid Contest contest) {
         logger.info("createContest() was called with contestname: " + contest.getName());
         return contestService.createContest(contest);
@@ -118,16 +115,6 @@ public class AdminContestController {
         JsonNode patched = patch.apply(objectMapper.convertValue(targetContest, JsonNode.class));
         return objectMapper.treeToValue(patched, Contest.class);
     }
-
-
-
-
-
-
-
-
-
-
 
     @ApiOperation(value = "Delete Contest by contest id")
     @ApiResponses(value = {
