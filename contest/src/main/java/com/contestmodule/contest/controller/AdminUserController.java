@@ -53,7 +53,7 @@ public class AdminUserController {
 
     @DeleteMapping("delete/{id}")
     public ResponseEntity deleteUser(@PathVariable Long id) {
-        if (userService.findUserById(id) != null) {
+        if (userService.findUserById(id).isPresent()) {
             userService.deleteUser(id);
             return new ResponseEntity(id + " was deleted", HttpStatus.OK);
         } else
