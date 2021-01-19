@@ -46,7 +46,7 @@ public class UserController {
         if (userService.getUserByUsername(user.getEmail()) != null) {
             throw new UserAlreadyExistsException("This email is already registered!");
         } else {
-            User userCreated = userService.save(user, false);
+            User userCreated = userService.saveWithPasswordEncryption(user, false);
             String appUrl = request.getContextPath();
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(userCreated,
                     request.getLocale(), appUrl));

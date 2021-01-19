@@ -48,7 +48,7 @@ public class AdminUserController {
         if (userService.getUserByUsername(user.getEmail()) != null) {
             throw new UserAlreadyExistsException("This email is already registered!");
         } else
-            return new UserNoPasswordDto().getUserNoPasswordDtoFromUser(userService.save(user, true));
+            return new UserNoPasswordDto().getUserNoPasswordDtoFromUser(userService.saveWithPasswordEncryption(user, true));
     }
 
     @DeleteMapping("delete/{id}")
