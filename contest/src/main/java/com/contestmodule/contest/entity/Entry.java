@@ -39,6 +39,19 @@ public class Entry {
         this.horseName = horseName;
     }
 
+    public Entry(Long id, @NotNull Long userId, Contest contest, String videolink, String userComment, boolean hasPaid, Integer score, String adminComment, LocalDate submissionDate, String horseName) {
+        this.id = id;
+        this.userId = userId;
+        this.contest = contest;
+        this.videolink = videolink;
+        this.userComment = userComment;
+        this.hasPaid = hasPaid;
+        this.score = score;
+        this.adminComment = adminComment;
+        this.submissionDate = submissionDate;
+        this.horseName = horseName;
+    }
+
     public Entry(){
 
     }

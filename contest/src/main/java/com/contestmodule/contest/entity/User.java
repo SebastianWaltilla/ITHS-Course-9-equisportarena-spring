@@ -22,11 +22,11 @@ public class User {
     private String lastname;
 
     private String address;
-    @NotEmpty(message = "Email should not be empty")
+    @NotEmpty(message = "Email must not be empty")
     @Column(unique=true)
     @Email(message = "Email should be valid")
     private String email;
-    @NotEmpty
+    @NotEmpty (message = "Password must not be empty")
     private String password;
 
     private LocalDate registeredDate;
