@@ -14,6 +14,6 @@ public class KafkaConsumerApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(KafkaConsumerApplication.class, args);
-    log.info("The Loancheck Application has started...");
+    log.info("Application has started...");
   }
 }
