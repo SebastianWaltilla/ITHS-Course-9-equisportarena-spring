@@ -1,4 +1,4 @@
-# Service for demo of kafka consumer. 
+# A application for a demo of a kafka consumer. 
 Start with running ./start-servers.sh to run the containers for the kafka services.
 
 Then start this application together with contest application.
