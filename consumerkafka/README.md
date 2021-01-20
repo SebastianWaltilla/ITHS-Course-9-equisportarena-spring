@@ -1,5 +1,5 @@
 # Service for demo of kafka consumer. 
-Start with running ./start-servers.sh for run containers for kafka.
+Start with running ./start-servers.sh to run the containers for the kafka services.
 Then start the application together with contest application.
 
 Send a message from contest applications endpoint by POST to /kafka/show
