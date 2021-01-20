@@ -20,9 +20,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 import javax.annotation.security.PermitAll;
 
-
+@PermitAll
 @RestController
 @CrossOrigin
 public class JwtAuthenticationController {
@@ -47,7 +51,11 @@ public class JwtAuthenticationController {
         this.userService = userService;
     }
 
-    @PermitAll
+    @ApiOperation(value = "Authenticate user.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "token:"),
+            @ApiResponse(code = 401, message = "Unauthorized")
+    })
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 

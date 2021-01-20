@@ -25,6 +25,10 @@ import javax.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.Optional;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping("/entry")
 @RolesAllowed("USER")
@@ -32,10 +36,10 @@ public class EntryController {
 
     Logger logger = LoggerFactory.getLogger(EntryService.class);
 
-    private EntryService entryService;
-    private ContestService contestService;
-    private UserService userService;
-    private ObjectMapper objectMapper;
+    private final EntryService entryService;
+    private final ContestService contestService;
+    private final UserService userService;
+    private final ObjectMapper objectMapper;
 
     public EntryController(EntryService entryService, ContestService contestService, UserService userService, ObjectMapper objectMapper) {
         this.entryService = entryService;
@@ -44,6 +48,12 @@ public class EntryController {
         this.objectMapper = objectMapper;
     }
 
+    @ApiOperation(value = "User create entry to competition.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Entry object"),
+            @ApiResponse(code = 404, message = "Record not found, User has already created an entry in contest with id {id}"),
+            @ApiResponse(code = 401, message = "Unauthorized")
+    })
     @PostMapping("/create")
     public ResponseEntity<EntryDto> createEntry(@RequestBody EntryDto entryDtoIn) throws UserAlreadyInContestException {
 
@@ -63,10 +73,16 @@ public class EntryController {
             return new ResponseEntity<EntryDto>(entryDto, HttpStatus.OK);
         } else {
             throw new UserAlreadyInContestException(
-                    "User has already created an entry (with id" + entryDto.getUserId() + ").");
+                    "User has already created an entry in contest with id " + entryDto.getContestId() + ".");
         }
     }
 
+    @ApiOperation(value = "User update entry to competition.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Ok"),
+            @ApiResponse(code = 404, message = "Record not found, User has already created an entry in contest with id {id}"),
+            @ApiResponse(code = 401, message = "Unauthorized")
+    })
     @PatchMapping("/update/{contestid}")
     public ResponseEntity<Entry> updateEntry(@PathVariable("contestid") Long contestid, @RequestBody EntryDto updatedEntry) throws JsonProcessingException {
 
@@ -88,6 +104,11 @@ public class EntryController {
         }
     }
 
+    @ApiOperation(value = "All entries by user identified by JWT token")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "List of entries"),
+            @ApiResponse(code = 401, message = "Unauthorized")
+            })
     @GetMapping("/my-entries")
     public Iterable<EntryWithContestNameDto> getMyContests(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

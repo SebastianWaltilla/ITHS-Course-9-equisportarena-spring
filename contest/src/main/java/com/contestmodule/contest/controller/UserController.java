@@ -9,7 +9,6 @@ import com.contestmodule.contest.entity.User;
 import com.contestmodule.contest.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +21,10 @@ import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 
 @RestController
 @RequestMapping("/user")
@@ -30,15 +33,20 @@ public class UserController {
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @Autowired
-    ApplicationEventPublisher eventPublisher;
+    private final ApplicationEventPublisher eventPublisher;
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ApplicationEventPublisher eventPublisher) {
         this.userService = userService;
+        this.eventPublisher = eventPublisher;
     }
 
+    @ApiOperation(value = "Register new user. Email and password required.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User successfully created!"),
+            @ApiResponse(code = 400, message = "Validation failed, [details]")
+    })
     @PermitAll
     @PostMapping("/register")
     public String createUser(@Valid @RequestBody User user, HttpServletRequest request) {
@@ -54,6 +62,11 @@ public class UserController {
         }
     }
 
+    @ApiOperation(value = "Personal information about user identified by JWT Token.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User successfully created!"),
+            @ApiResponse(code = 401, message = "Unauthorized")
+    })
     @GetMapping("/me")
     public ResponseEntity<UserNoPasswordDto> findUserById() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -65,7 +78,7 @@ public class UserController {
         } else
             throw new UserNotFoundException("This user does not exist!");
     }
-
+    @ApiOperation(value = "Delete account and personal information about user identified by JWT Token.")
     @DeleteMapping("/delete")
     public void deleteUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
