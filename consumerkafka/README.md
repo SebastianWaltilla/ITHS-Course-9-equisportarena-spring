@@ -1,3 +1,6 @@
-# Loan Checker Service
+# Service for demo of kafka consumer. 
+Start with running ./start-servers.sh for run containers for kafka.
+Then start the application together with contest application.
 
-Receives applications via messaging and then sorts them into Approved and Declined
+Send a message from contest applications endpoint by POST to /kafka/show
+In kafka consumer applications log, a message showing thats been sent from contest.
