@@ -95,17 +95,21 @@ public class AdminContestController {
     * */
     @ApiOperation(value = "Partial update of contest with Json Patch operations.", response = Contest.class)
     @PatchMapping(path = "/partial-update-contest-with-jsonpatch/{id}", consumes = "application/json-patch+json")
-    public ResponseEntity<ContestWithEntrySummationDto> partialUpdateContest(@PathVariable Long id, @RequestBody JsonPatch patch) {
+    public ResponseEntity<Contest> partialUpdateContest(@PathVariable Long id, @RequestBody JsonPatch patch) {
+
+        if(patch.toString().contains("path: \"/id\""))
+            return new ResponseEntity("Cannot modify id.", HttpStatus.BAD_REQUEST);
         try {
 
             Contest contest = contestService.findContestByID(id).orElseThrow(() -> new UserNotFoundException("Contest not found"));
             Contest contestPatched = applyPatchToContest(patch, contest);
 
-            contestService.updateContest(contestPatched);
-            return ResponseEntity.ok(new ContestWithEntrySummationDto().getContestWithEntrySummationDtoFromContest(contestPatched));
+            var savedContest = contestService.updateContest(contestPatched);
+            return ResponseEntity.ok(savedContest);
         } catch (JsonPatchException | JsonProcessingException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         } catch (UserNotFoundException e) {
+            logger.info("Contest updated with: " + patch.toString());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
@@ -123,7 +127,7 @@ public class AdminContestController {
     public ResponseEntity deleteContest(@PathVariable Long id) {
         if (contestService.findContestByID(id).isPresent()) {
             contestService.deleteContest(id);
-            return new ResponseEntity(id + " was deleted", HttpStatus.OK);
+            return new ResponseEntity("Contest with id: "+ id + " was deleted", HttpStatus.OK);
         } return ResponseEntity.notFound().build();
     }
 }
